@@ -18,7 +18,8 @@ def new_item(list_values):
 
     # Unpack the list_values into individual arguments
     nome, unidade, quantidade, valor_uni, switch_total = list_values
-    if switch_total is not 
+    if switch_total is not "blue":
+            pass
     # Instantiate the Item object
     item = Item(nome, unidade, quantidade, valor_uni, switch_total)
 

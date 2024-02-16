@@ -27,19 +27,20 @@ class Item: #objeto referente aos itens do orçamento
 class TopLevelWindow(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        new_window.title("New Window")
+        self.title("New Window")
+        self.resizable(False, False)
 
         labels = ["Unidade", "Quantidade", "Nome", "Valor Unitário", "Valor Total"]
         entries = []
 
         for i, label_text in enumerate(labels):
-            label = ctk.CTkLabel(new_window, text=label_text + ":",)
+            label = ctk.CTkLabel(self, text=label_text + ":",)
             label.grid(row=i, column=0, padx=5, pady=5, sticky="w")
 
-            entry = ctk.CTkEntry(new_window)
+            entry = ctk.CTkEntry(self)
             entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
             entries.append(entry)
 
-        add_button = ctk.CTkButton(new_window, text="Adicionar" )
+        add_button = ctk.CTkButton(self, text="Adicionar" )
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10)
 

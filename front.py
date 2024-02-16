@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
-from funcion import * # importando todas funções
+# from funcion import * # importando todas funções
 from objects import Table, Item, TopLevelWindow #objetos como tabela e items
 
 
@@ -11,16 +11,11 @@ ctk.set_appearance_mode("dark")
 
 ctk.set_default_color_theme("green")
 
-class CustomTkinterApp(ctk.CTk):
+class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.toplevel_window = None
+        
 
-        def open_topLevel(self):
-            if self.topLevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = TopLevelWindow(self)
-            else:
-                self.toplevel_window.focus()
 
 
         self.title("Custom Tkinter App")
@@ -33,6 +28,15 @@ class CustomTkinterApp(ctk.CTk):
 
         self.create_sidebar()
         self.create_main_section()
+        self.toplevel_window = None
+        
+    def open_topLevel(self):
+            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+                self.toplevel_window = TopLevelWindow(self)
+            else:
+                self.toplevel_window.focus()
+        
+
 
     def create_sidebar(self):
         self.sidebar = ctk.CTkFrame(self.master, width=200)
@@ -62,13 +66,13 @@ class CustomTkinterApp(ctk.CTk):
         button_frame.pack(side="bottom", anchor="se", padx=20, pady=20)
 
 
-        self.button = ctk.CTkButton(self, text="Novo item", command=self.open_topLevel)
+        self.button = ctk.CTkButton(self, text="Novo item",command=self.open_topLevel)
         self.button.pack(pady=5)
 
 
 def main():
 
-    app = CustomTkinterApp()
+    app = MainWindow()
     app.mainloop()
 
 if __name__ == "__main__":
