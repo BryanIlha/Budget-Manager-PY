@@ -1,7 +1,4 @@
-from tkinter import ttk
-
-
-
+from tkinter import ttk 
 class Table():
     def __init__(self, parent):
         columns = ('Unidade', 'Quantidade', 'Nome', 'Valor Unitario', 'Valor Total')
@@ -11,3 +8,14 @@ class Table():
         for col in columns:
             self.treeview.heading(col, text=col)
             self.treeview.column(col, width=20)
+
+class Item: #objeto referente aos itens do orçamento
+    def __init__(self, nome, unidade, quantidade, valor_uni):
+        self.nome = nome
+        self.unidade = unidade
+        self.quantidade = quantidade
+        self.valor_uni = valor_uni
+        self.valor_total = quantidade * valor_uni
+
+
+

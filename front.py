@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
-from funcion import Item
-from table import Table
-from top import Top
+from funcion import * # importando todas funções
+from objects import Table, Item #objetos como tabela e items 
+
 
 ctk.set_appearance_mode("dark")        
  
