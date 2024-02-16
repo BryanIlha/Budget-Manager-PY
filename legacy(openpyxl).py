@@ -1,10 +1,10 @@
 # Import customtkinter module
 import customtkinter as ctk
 from tkinter import ttk
-import xlwings as xw
+import openpyxl
  
-
-
+workbook = openpyxl.load_workbook("base.xlsx")
+sheet = workbook.active
 ctk.set_appearance_mode("dark")        
  
 
@@ -31,7 +31,8 @@ class Janela(ctk.CTk): #objeto referente a interface grafica
 
                 self.geometry("200x200")    
                 columns = ('Unidade', 'Quantidade','Nome','Valor Unitario','Valor Total')
-                self.tabela = ttk.Treeview(self, columns=columns, show='headings')
+                
+                self.tabela = CTkTable(self, columns=columns, show='headings')
                 self.tabela.grid(row=0, column=0,sticky='n')
 
                 for col in columns:
@@ -56,35 +57,27 @@ class Janela(ctk.CTk): #objeto referente a interface grafica
                 self.tabela.insert('', 'end', values=values)
 
         def gerar_excel(self):
-    # Abrir o arquivo Excel existente
-            wb = xw.Book("base.xlsx")
-            # Ativar a planilha desejada
-            sheet = wb.sheets.active
-
-            itens = self.tabela.get_children()
-            for item in itens:
-                unidade, quantidade, nome, valor_uni, valor_total = self.tabela.item(item, 'values')
-                self.adicionar_item(sheet, unidade, quantidade, nome, valor_uni, valor_total, self.linha_atual)
-
-            # Salvar as alterações no arquivo Excel
-            wb.save("base.xlsx")
-            # Fechar o arquivo Excel
-            wb.close()
+               itens = self.tabela.get_children()
+               for item in itens:
+                        unidade, quantidade, nome, valor_uni, valor_total = self.tabela.item(item, 'values')
+                        self.adicionar_item(unidade,quantidade,
+                   nome,valor_uni,valor_total,self.linha_atual)
                         
                
-        def adicionar_item(self,sheet,unidade,quantidade,
+        def adicionar_item(self,unidade,quantidade,
                    nome,valor_uni,valor_total,linha_atual): # receber variavel do botão de adicionar no top level
     
                 self.linha_atual += 1
-                            
-                sheet.range(f"A{str(linha_atual)}").value = unidade
-                sheet.range(f"B{str(linha_atual)}").value = quantidade
-                sheet.range(f"C{str(linha_atual)}").value = nome
-                sheet.range(f"E{str(linha_atual)}").value = valor_uni
-                sheet.range(f"G{str(linha_atual)}").value = valor_total
-
-
                 
+                
+                sheet[f"A{str(linha_atual)}"] = unidade
+                sheet[f"B{str(linha_atual)}"] = quantidade
+                sheet[f"C{str(linha_atual)}"] = nome
+                sheet[f"E{str(linha_atual)}"] = valor_uni
+                sheet[f"G{str(linha_atual)}"] = valor_total
+
+
+                workbook.save("base.xlsx") ##para salvar
 
                                 
                

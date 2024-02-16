@@ -10,8 +10,16 @@ ctk.set_appearance_mode("dark")
 
 
 ctk.set_default_color_theme("green")    
- 
-# Create App class
+
+class Table:
+    def __init__(self, parent):
+        columns = ('Unidade', 'Quantidade', 'Nome', 'Valor Unitario', 'Valor Total')
+        self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
+        self.treeview.grid(row=0, column=0, sticky='n')
+
+        for col in columns:
+            self.treeview.heading(col, text=col)
+            self.treeview.column(col, width=20)
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade, valor_uni):
@@ -30,13 +38,7 @@ class Janela(ctk.CTk): #objeto referente a interface grafica
                 self.title("App")    
 
                 self.geometry("200x200")    
-                columns = ('Unidade', 'Quantidade','Nome','Valor Unitario','Valor Total')
-                self.tabela = ttk.Treeview(self, columns=columns, show='headings')
-                self.tabela.grid(row=0, column=0,sticky='n')
-
-                for col in columns:
-                        self.tabela.heading(col, text=col)
-                        self.tabela.column(col, width=20)
+                self.tabela= Table(self)
 
                 self.botao_adicionar = ctk.CTkButton(self, text='RANDOM',
                                                 fg_color='red', width=100, height=100,command=self.aleatorio
@@ -53,12 +55,12 @@ class Janela(ctk.CTk): #objeto referente a interface grafica
         def aleatorio(self,):
                 item = Item(nome="Camiseta", unidade="peça", quantidade=2, valor_uni=25.0)
                 values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
-                self.tabela.insert('', 'end', values=values)
+                self.tabela.treeview.insert('', 'end', values=values)
 
         def gerar_excel(self):
-               itens = self.tabela.get_children()
+               itens = self.tabela.treeview.get_children()
                for item in itens:
-                        unidade, quantidade, nome, valor_uni, valor_total = self.tabela.item(item, 'values')
+                        unidade, quantidade, nome, valor_uni, valor_total = self.tabela.treeview.item(item, 'values')
                         self.adicionar_item(unidade,quantidade,
                    nome,valor_uni,valor_total,self.linha_atual)
                         
