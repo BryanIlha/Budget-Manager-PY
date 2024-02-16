@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
-from objects import Table, Item, TopLevelWindow #objetos como tabela e items
+from objects import Table, TopLevelWindow #objetos como tabela e items
 
 
 ctk.set_appearance_mode("dark")

@@ -1,5 +1,7 @@
-from objects import Item
 
+import openpyxl
+workbook = openpyxl.load_workbook("base.xlsx")
+sheet = workbook.active
 
 
 # lista= [1,2,3,4,'ON']
@@ -12,8 +14,11 @@ def turn_into_int(quantidade,valor_uni):
             return int_quant, int_valor_uni
     except:
             print("Não foi possivel transformar em numero")
+
+
+
             
-def new_item(list_values):
+def new_item(object,list_values):
 
 
     # Unpack the list_values into individual arguments
@@ -21,7 +26,7 @@ def new_item(list_values):
     if switch_total is not "blue":
             pass
     # Instantiate the Item object
-    item = Item(nome, unidade, quantidade, valor_uni, switch_total)
+    item = object(nome, unidade, quantidade, valor_uni, switch_total)
 
     # Now you can access its attributes
     values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)

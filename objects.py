@@ -1,5 +1,6 @@
 from tkinter import ttk
 import customtkinter as ctk
+from funcion import *
 
 class Table():
     def __init__(self, parent):
@@ -31,7 +32,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         self.resizable(False, False)
 
         labels = ["Unidade", "Quantidade", "Nome", "Valor Unitário", "Valor Total"]
-        entries = []
+        self.entries = []
 
         for i, label_text in enumerate(labels):
             label = ctk.CTkLabel(self, text=label_text + ":",)
@@ -39,8 +40,10 @@ class TopLevelWindow(ctk.CTkToplevel):
 
             entry = ctk.CTkEntry(self)
             entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
-            entries.append(entry)
+            self.entries.append(entry)
 
-        add_button = ctk.CTkButton(self, text="Adicionar" )
-        add_button.grid(row=len(labels)+1, columnspan=2, pady=10)
+        add_button = ctk.CTkButton(self, text="Adicionar",command=new_item(Item,self.entries) )
+        add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
+
+
 
