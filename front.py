@@ -25,17 +25,12 @@ class MainWindow(ctk.CTk):
 
         # Configure dark blue theme
 
-
+        
         self.create_sidebar()
         self.create_main_section()
         self.toplevel_window = None
         
-    def open_topLevel(self):
-            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = TopLevelWindow(self)
-            else:
-                self.toplevel_window.focus()
-        
+
 
 
     def create_sidebar(self):
@@ -68,7 +63,13 @@ class MainWindow(ctk.CTk):
 
         self.button = ctk.CTkButton(self, text="Novo item",command=self.open_topLevel)
         self.button.pack(pady=5)
-
+    def open_topLevel(self):
+            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+                self.toplevel_window = TopLevelWindow(self,self.table)
+            else:
+                self.toplevel_window.focus()
+        
+    
 
 def main():
 

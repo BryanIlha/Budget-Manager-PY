@@ -1,6 +1,7 @@
 from tkinter import ttk
 import customtkinter as ctk
-from funcion import *
+from funcion import new_item, add_to_table
+
 
 class Table():
     def __init__(self, parent):
@@ -23,10 +24,14 @@ class Item: #objeto referente aos itens do orçamento
 
 
 class TopLevelWindow(ctk.CTkToplevel):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, master,table_instance,*args, **kwargs):
+        super().__init__(master,*args, **kwargs)
         self.title("New Window")
         self.resizable(False, False)
+
+
+        self.table_instance = table_instance
+
 
         labels = ["Nome", "Quantidade", "Unidade", "Valor Unitário", "Valor Total"]
         self.entries = []
@@ -50,7 +55,7 @@ class TopLevelWindow(ctk.CTkToplevel):
     def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
         nome, uni, quant, uni_val, total_val  = [entry.get() for entry in self.entries]
         
-        aaaa
+   
 
         if self.switch_var.get()=="on":
             try:
@@ -63,7 +68,7 @@ class TopLevelWindow(ctk.CTkToplevel):
 
         item_carat =nome, uni, quant, uni_val, total_val
         
-        new_item(Item, item_carat) #criando um objeto com os valores obtido
+        new_item(Item,item_carat,self.table_instance) #criando um objeto com os valores obtido
 
     def switch_event(self):
         if self.switch_var.get() == "on":
