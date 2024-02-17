@@ -69,6 +69,10 @@ class TopLevelWindow(ctk.CTkToplevel):
         item_carat =nome, uni, quant, uni_val, total_val
         
         new_item(Item,item_carat,self.table_instance) #criando um objeto com os valores obtido
+        self.destroy()
+    
+    def destroy(self):
+        super().destroy()
 
     def switch_event(self):
         if self.switch_var.get() == "on":
