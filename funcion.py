@@ -4,8 +4,9 @@ workbook = openpyxl.load_workbook("base.xlsx")
 sheet = workbook.active
 
 items_list = []
+index_counter = 0
 
-# lista= [1,2,3,4,'ON']
+
 
 
 
@@ -21,13 +22,14 @@ def new_item(object,list_values):
 
     # Instantiate the Item object
     item = object(nome, unidade, quantidade, valor_uni, valor_total)
-    items_list.append(item)
+    items_list.append(item) #parte mega importante para ter uma lista dos objetos
 
-    # Now you can access its attributes
-    values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
-    print(valor_total)
+
+#     values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
+#     for value in values:
+#             print(value)
             
-# new_item(lista)
+
 
 
 def add_to_excel(self,unidade,quantidade,
