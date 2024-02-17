@@ -22,15 +22,14 @@ def new_item(object,list_values):
 
 
     # Unpack the list_values into individual arguments
-    nome, unidade, quantidade, valor_uni, switch_total = list_values
-    if switch_total is not "blue":
-            pass
+    nome, unidade, quantidade, valor_uni, valor_total = list_values
+
     # Instantiate the Item object
-    item = object(nome, unidade, quantidade, valor_uni, switch_total)
+    item = object(nome, unidade, quantidade, valor_uni, valor_total)
 
     # Now you can access its attributes
     values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
-    print(values)
+    print(valor_total)
             
 # new_item(lista)
 

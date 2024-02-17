@@ -14,15 +14,12 @@ class Table():
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade,
-                  valor_uni, switch_total):
+                  valor_uni, valor_total):
         self.nome = nome
         self.unidade = unidade
         self.quantidade = quantidade
         self.valor_uni = valor_uni
-        if switch_total == 'ON':
-            self.valor_total = quantidade * valor_uni
-        else:
-            self.valor_total = switch_total
+        self.valor_total = valor_total
 
 
 class TopLevelWindow(ctk.CTkToplevel):
@@ -31,7 +28,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         self.title("New Window")
         self.resizable(False, False)
 
-        labels = ["Unidade", "Quantidade", "Nome", "Valor Unitário", "Valor Total"]
+        labels = ["Nome", "Quantidade", "Unidade", "Valor Unitário", "Valor Total"]
         self.entries = []
 
         for i, label_text in enumerate(labels):
@@ -42,8 +39,39 @@ class TopLevelWindow(ctk.CTkToplevel):
             entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
             self.entries.append(entry)
 
-        add_button = ctk.CTkButton(self, text="Adicionar",command=new_item(Item,self.entries) )
+        self.switch_var = ctk.StringVar(value="off")
+        switch = ctk.CTkSwitch(self, text="Calcular Valor Total", variable=self.switch_var, command=self.switch_event,onvalue="on", offvalue="off")
+        switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
+
+        add_button = ctk.CTkButton(self, text="Adicionar",command=lambda: self.get_entry_vals()) 
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
 
 
+    def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
+        nome, uni, quant, uni_val, total_val  = [entry.get() for entry in self.entries]
+        
+        
 
+        if self.switch_var.get()=="on":
+            try:
+                total_val = int(quant) * int(uni_val)
+                print(total_val)
+            except:
+                print('deu ruim')#adicionar messagebox BRUNO
+       
+            
+
+        item_carat =nome, uni, quant, uni_val, total_val
+        
+        new_item(Item, item_carat) #criando um objeto com os valores obtido
+
+    def switch_event(self):
+        if self.switch_var.get() == "on":
+            self.entries[-1].grid_remove()  # Remove a entrada de Valor Total
+            print('ON')
+            
+        else:
+            self.entries[-1].grid()  # Reexibe a entrada de Valor Total
+            print('OFF')
+
+  
