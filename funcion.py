@@ -3,17 +3,12 @@ import openpyxl
 workbook = openpyxl.load_workbook("base.xlsx")
 sheet = workbook.active
 
+items_list = []
 
 # lista= [1,2,3,4,'ON']
 
 
-def turn_into_int(quantidade,valor_uni):
-    try:
-            int_quant = int(quantidade)
-            int_valor_uni = int(valor_uni)
-            return int_quant, int_valor_uni
-    except:
-            print("Não foi possivel transformar em numero")
+
 
 
 
@@ -26,6 +21,7 @@ def new_item(object,list_values):
 
     # Instantiate the Item object
     item = object(nome, unidade, quantidade, valor_uni, valor_total)
+    items_list.append(item)
 
     # Now you can access its attributes
     values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
