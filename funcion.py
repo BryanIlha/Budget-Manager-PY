@@ -3,7 +3,7 @@ import xlwings as xw
 
 items_list = []
 index_counter = 0
-linha_atual=1
+
 
 
 
