@@ -1,18 +1,23 @@
 
-
-import openpyxl
-# workbook = openpyxl.load_workbook("base.xlsx")
-# sheet = workbook.active
+import xlwings as xw
 
 items_list = []
 index_counter = 0
+linha_atual=1
 
 
 
-
-
-
-
+def init_excel():
+    try:
+        # Abrir um arquivo Excel existente
+            wb = xw.Book("base.xlsx")
+            # Ativar a planilha desejada
+            sheet = wb.sheets.active
+        
+            return sheet
+        
+    except Exception as e:
+        print("Não conseguiu abrir o arquivo Excel:", e)
 
             
 def new_item(Item,list_values,table_instance):
@@ -32,39 +37,24 @@ def new_item(Item,list_values,table_instance):
 
 
 
-def add_to_table(item, table): #use the item object into the table
+def add_to_table(item, table_instance): #use the item object into the table
     
     values = (item.nome, item.unidade, item.quantidade, item.valor_uni, item.valor_total)
-    table.treeview.insert('', 'end', values=values)
+    table_instance.treeview.insert('', 'end', values=values)
 
-# def add_to_excel(self,unidade,quantidade,
-#                    nome,valor_uni,valor_total,linha_atual): # receber variavel do botão de adicionar no top level
+def create_excel():
+
+    sheet= init_excel()
+    linha_atual = 8
     
-#                 self.linha_atual += 1
+    for obj in items_list: 
                 
-                
-#                 sheet[f"A{str(linha_atual)}"] = unidade
-#                 sheet[f"B{str(linha_atual)}"] = quantidade
-#                 sheet[f"C{str(linha_atual)}"] = nome
-#                 sheet[f"E{str(linha_atual)}"] = valor_uni
-#                 sheet[f"G{str(linha_atual)}"] = valor_total
+            sheet.range(f"A{str(linha_atual)}").value = obj.unidade
+            sheet.range(f"B{str(linha_atual)}").value = obj.quantidade
+            sheet.range(f"C{str(linha_atual)}").value = obj.nome
+            sheet.range(f"E{str(linha_atual)}").value = obj.valor_uni
+            sheet.range(f"G{str(linha_atual)}").value = obj.valor_total
+            linha_atual += 1
+    sheet.book.save()
+    sheet.book.close()
 
-
-#                 workbook.save("base.xlsx") ##para salvar
-
-# def create_excel(self):
-#                itens = self.tabela.treeview.get_children()
-#                for item in itens:
-#                         unidade, quantidade, nome, valor_uni, valor_total = self.tabela.treeview.item(item, 'values')
-#                         add_to_excel(unidade,quantidade,
-#                    nome,valor_uni,valor_total,self.linha_atual)
-                        
-               
-# def remover_item(self,index): # receber variavel do botão de adicionar no top level
-    
-#                 self.linha_atual -= 1
-                
-                
-
-
-#                 workbook.save("base.xlsx") ##para salvar

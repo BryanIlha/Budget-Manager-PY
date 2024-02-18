@@ -3,6 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
 from objects import Table, TopLevelWindow #objetos como tabela e items
+from funcion import create_excel
 
 
 ctk.set_appearance_mode("dark")
@@ -16,7 +17,8 @@ class MainWindow(ctk.CTk):
         super().__init__(*args, **kwargs)
         
 
-
+       
+        
 
         self.title("Custom Tkinter App")
         self.geometry("800x600")
@@ -40,7 +42,7 @@ class MainWindow(ctk.CTk):
         profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
         profile_photo.pack(pady=20)
 
-        section1_button = ctk.CTkButton(self.sidebar, text="Section 1", )
+        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
         section1_button.pack(pady=5, padx=10, fill="x")
 
         section2_button = ctk.CTkButton(self.sidebar, text="Section 2",  )
