@@ -43,35 +43,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         switch = ctk.CTkSwitch(self, text="Calcular Valor Total", variable=self.switch_var, command=self.switch_event,onvalue="on", offvalue="off")
         switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
 
-        add_button = ctk.CTkButton(self, text="Adicionar",command=lambda: self.get_entry_vals()) 
+        add_button = ctk.CTkButton(self, text="Adicionar",command=modal_confirmação(entry)) 
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
-
-
-    def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
-        nome, uni, quant, uni_val, total_val  = [entry.get() for entry in self.entries]
-        
-        
-
-        if self.switch_var.get()=="on":
-            try:
-                total_val = int(quant) * int(uni_val)
-                
-            except:
-                print('deu ruim')#adicionar messagebox BRUNO
-       
-            
-
-        item_carat =nome, uni, quant, uni_val, total_val
-        
-        new_item(Item, item_carat) #criando um objeto com os valores obtido
-
-    def switch_event(self):
-        if self.switch_var.get() == "on":
-            self.entries[-1].grid_remove()  # Remove a entrada de Valor Total
-            print('ON')
-            
-        else:
-            self.entries[-1].grid()  # Reexibe a entrada de Valor Total
-            print('OFF')
 
   

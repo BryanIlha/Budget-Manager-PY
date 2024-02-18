@@ -1,4 +1,6 @@
 
+from CTkMessagebox import CTkMessagebox
+
 import openpyxl
 workbook = openpyxl.load_workbook("base.xlsx")
 sheet = workbook.active
@@ -63,3 +65,44 @@ def remover_item(self,index): # receber variavel do botão de adicionar no top l
 
 
                 workbook.save("base.xlsx") ##para salvar
+
+def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
+        nome, uni, quant, uni_val, total_val  = [entry.get() for entry in self.entries]
+        
+        
+
+        if self.switch_var.get()=="on":
+            try:
+                total_val = int(quant) * int(uni_val)
+                
+            except:
+                print('deu ruim')#adicionar messagebox BRUNO
+       
+            
+
+        item_carat =nome, uni, quant, uni_val, total_val
+        
+        new_item(Item, item_carat) #criando um objeto com os valores obtido
+
+def switch_event(self):
+        if self.switch_var.get() == "on":
+            self.entries[-1].grid_remove()  # Remove a entrada de Valor Total
+            print('ON')
+            
+        else:
+            self.entries[-1].grid()  # Reexibe a entrada de Valor Total
+            print('OFF')
+
+
+def modal_confirmação(entry):
+    # get yes/no answers
+    msg = CTkMessagebox(title="Adicionar item?", message="Deseja adicionar este item a lista?",
+                        icon="question", option_1="Cancel", option_2="Não", option_3="Sim")
+    response = msg.get()
+    
+    if response=="Yes":
+        lambda: entry.get_entry_vals()
+
+        app.destroy()       
+    else:
+        print("Click 'Yes' to exit!")
