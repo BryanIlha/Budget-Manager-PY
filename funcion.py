@@ -34,7 +34,7 @@ def new_item(Item,list_values,table_instance):
 
 def add_to_table(item, table): #use the item object into the table
     
-    values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
+    values = (item.nome, item.unidade, item.quantidade, item.valor_uni, item.valor_total)
     table.treeview.insert('', 'end', values=values)
 
 # def add_to_excel(self,unidade,quantidade,

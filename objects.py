@@ -5,7 +5,7 @@ from funcion import new_item, add_to_table
 
 class Table():
     def __init__(self, parent):
-        columns = ('Unidade', 'Quantidade', 'Nome', 'Valor Unitario', 'Valor Total')
+        columns = ('Nome', 'Unidade', 'Quantidade', 'Valor Unitario', 'Valor Total')
         self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
         self.treeview.pack(expand=True, fill="both")
 
@@ -33,7 +33,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         self.table_instance = table_instance
 
 
-        labels = ["Nome", "Quantidade", "Unidade", "Valor Unitário", "Valor Total"]
+        labels = ["Nome", "Unidade", "Quantidade", "Valor Unitário", "Valor Total"]
         self.entries = []
 
         for i, label_text in enumerate(labels):
