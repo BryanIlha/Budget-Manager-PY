@@ -77,10 +77,10 @@ class TopLevelWindow(ctk.CTkToplevel):
     def switch_event(self):
         if self.switch_var.get() == "on":
             self.entries[-1].grid_remove()  # Remove a entrada de Valor Total
-            print('ON')
+            
             
         else:
             self.entries[-1].grid()  # Reexibe a entrada de Valor Total
-            print('OFF')
+            
 
   
