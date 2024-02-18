@@ -6,7 +6,9 @@ workbook = openpyxl.load_workbook("base.xlsx")
 # Selecionando a planilha desejada (por padrão, será a primeira planilha)
 sheet = workbook.active
 
-linha_atual = 7
+linha_atual = 78
+
+
 
 def definir_cliente(nome_cliente): # input na window principal
     sheet[f"B{str(8)}"] = nome_cliente
