@@ -3,3 +3,5 @@ __pycache__/
 *$py.class
 .env
 *.xlsx
+__pycache__/funcion.cpython-312.pyc
+__pycache__/objects.cpython-312.pyc
