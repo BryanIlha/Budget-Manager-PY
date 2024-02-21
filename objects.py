@@ -14,7 +14,7 @@ class Table():
         style.configure("Treeview",
                             background="#2a2d2e",
                             foreground="white",
-                            rowheight=25,
+                            rowheight=20,
                             fieldbackground="#343638",
                             bordercolor="#343638",
                             borderwidth=0)

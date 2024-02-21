@@ -63,7 +63,7 @@ class MainWindow(ctk.CTk):
         button_frame.pack(side="bottom", anchor="se", padx=20, pady=20)
 
 
-        self.button = ctk.CTkButton(self, text="Novo item",command=self.open_topLevel)
+        self.button = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
         self.button.pack(pady=5)
     def open_topLevel(self):
             if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
