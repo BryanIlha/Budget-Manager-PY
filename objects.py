@@ -23,7 +23,8 @@ class Table():
         style.configure("Treeview.Heading",
                             background="#565b5e",
                             foreground="white",
-                            relief="flat")
+                            relief="flat",
+                            font=("Arial", 12))
         style.map("Treeview.Heading",
                       background=[('active', '#3484F0')])
         for col in columns:
