@@ -16,7 +16,7 @@ class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.service_list=[] #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
+        self.dict_serv={} #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
         
 
         self.toplevel_window = None #burocracia pra ter toplevel window
@@ -67,9 +67,11 @@ class MainWindow(ctk.CTk):
 
         self.new_service()
         self.bt_serv.destroy()
+        dict_serv_keys = list(self.dict_serv.keys())
 
         self.option_serv = ctk.CTkOptionMenu(self.main_section ,
-                                             values=self.service_list)
+                                             values=dict_serv_keys,
+                                             command=self.switch_service)
         self.option_serv.configure(width=300)
         self.option_serv.pack(anchor="center")
 
@@ -111,13 +113,17 @@ class MainWindow(ctk.CTk):
         
     
     def new_service(self): #nome dos serviços so para aparecer no option menu
-        service = inputbox("Novo Serviço",("Digite o nome do Serviço"))
+        
+        service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
 
-        self.service_list.append(service)
-        if len(self.service_list)!=1: #BAIANO
-            self.option_serv.configure(values=self.service_list)
+        self.dict_serv[service_name] = []
+        for serv in self.dict_serv:
+            print(serv)
+        if len(self.dict_serv)!=1: #BAIANO
+            self.option_serv.configure(values=self.dict_serv)
 
-
+    def switch_service(self,choice):
+        print(f'trocou por {choice}')
 
     def delete_service(self):
         service_to_dlt= self.option_serv.get()
