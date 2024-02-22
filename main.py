@@ -1,92 +1,131 @@
-# Import customtkinter module
-import customtkinter as ctk
+import tkinter as tk
 from tkinter import ttk
-import openpyxl
- 
-workbook = openpyxl.load_workbook("base.xlsx")
-sheet = workbook.active
-ctk.set_appearance_mode("dark")        
- 
+import customtkinter as ctk
+# from funcion import * # importando todas funções
+from objects import Table, TopLevelWindow #objetos como tabela e items
+from funcion import create_excel, inputbox
 
 
-ctk.set_default_color_theme("green")    
-
-class Table:
-    def __init__(self, parent):
-        columns = ('Unidade', 'Quantidade', 'Nome', 'Valor Unitario', 'Valor Total')
-        self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
-        self.treeview.grid(row=0, column=0, sticky='n')
-
-        for col in columns:
-            self.treeview.heading(col, text=col)
-            self.treeview.column(col, width=20)
-
-class Item: #objeto referente aos itens do orçamento
-    def __init__(self, nome, unidade, quantidade, valor_uni):
-        self.nome = nome
-        self.unidade = unidade
-        self.quantidade = quantidade
-        self.valor_uni = valor_uni
-        self.valor_total = quantidade * valor_uni
-
-class Janela(ctk.CTk): #objeto referente a interface grafica
-
-        def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-                self.linha_atual = 7
-
-                self.title("App")    
-
-                self.geometry("200x200")    
-                self.tabela= Table(self)
-
-                self.botao_adicionar = ctk.CTkButton(self, text='RANDOM',
-                                                fg_color='red', width=100, height=100,command=self.aleatorio
-                                                )
-                self.botao_adicionar.grid(row=8,column=0,padx=1,pady=2)
-
-                self.botao_adicionar = ctk.CTkButton(self, text='Gerar excel',
-                                                fg_color='red', width=100, height=100,command=self.gerar_excel
-                                                )
-                self.botao_adicionar.grid(row=9,column=0,padx=1,pady=2)
+ctk.set_appearance_mode("dark")
 
 
 
-        def aleatorio(self,):
-                item = Item(nome="Camiseta", unidade="peça", quantidade=2, valor_uni=25.0)
-                values = (item.unidade, item.quantidade, item.nome, item.valor_uni, item.valor_total)
-                self.tabela.treeview.insert('', 'end', values=values)
+ctk.set_default_color_theme("green")
 
-        def gerar_excel(self):
-               itens = self.tabela.treeview.get_children()
-               for item in itens:
-                        unidade, quantidade, nome, valor_uni, valor_total = self.tabela.treeview.item(item, 'values')
-                        self.adicionar_item(unidade,quantidade,
-                   nome,valor_uni,valor_total,self.linha_atual)
-                        
+class MainWindow(ctk.CTk):
+    def __init__(self,  *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.service_list=[] #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
+        
+
+        self.toplevel_window = None #burocracia pra ter toplevel window
+        
+
+        self.title("Custom Tkinter App")
+        self.geometry("800x600")
+
+        # Configure color palette
+
+        # Configure dark blue theme
+
+        
+        self.create_sidebar()
+        self.first_service()
+        
+        
+    def first_service(self):
+        self.main_section = ctk.CTkFrame(self.master,)
+        self.main_section.pack(expand=True, fill="both", padx=20, pady=10)
+
+        title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
+        title_label.pack(pady=10)
+
+        self.bt_serv = ctk.CTkButton(self.main_section, text="Novo Serviço", command= lambda:self.create_main_section())
+        self.bt_serv.configure(fg_color="purple",
+                                hover_color="blue",
+                                width=80,
+                                height=80)
+        self.bt_serv.pack(side="top", pady=5)
                
-        def adicionar_item(self,unidade,quantidade,
-                   nome,valor_uni,valor_total,linha_atual): # receber variavel do botão de adicionar no top level
+
+
+    def create_sidebar(self):
+        self.sidebar = ctk.CTkFrame(self.master, width=200)
+        self.sidebar.pack(side="left", fill="y")
+
+        profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
+        profile_photo.pack(pady=20)
+
+        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
+        section1_button.pack(pady=5, padx=10, fill="x")
+
+        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:self.first_service()  )
+        section2_button.pack(pady=5, padx=10, fill="x")
+
+    def create_main_section(self):
+
+        self.new_service()
+        self.bt_serv.destroy()
+
+        self.option_serv = ctk.CTkOptionMenu(self.main_section ,
+                                             values=self.service_list)
+        self.option_serv.configure(width=300)
+        self.option_serv.pack(anchor="center")
+
+
+        table_frame = ctk.CTkFrame(self.main_section)
+        table_frame.pack(expand=True, fill="both", padx=10, pady=10)
+        self.table = Table(table_frame)
+
+        button_frame = ctk.CTkFrame(self.master,)
+        button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
+
+        self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=self.new_service)
+        self.bt_serv.configure(fg_color="purple",
+                                hover_color="blue",
+                                width=80,
+                                height=80)
+        self.bt_serv.pack(side="left", pady=5)
+
+        self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=self.delete_service)
+        self.bt_del_serv.configure(fg_color="red",
+                                hover_color="black",
+                                width=80,
+                                height=80)
+        self.bt_del_serv.pack(side="left", pady=5)
+
+        self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
+        self.bt_item.configure(fg_color="green",
+                                width=80,
+                                height=80)
+        self.bt_item.pack(side="right",pady=5)
+
+
+
+    def open_topLevel(self): #new item
+            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+                self.toplevel_window = TopLevelWindow(self,self.table)
+            else:
+                self.toplevel_window.focus()
+        
     
-                self.linha_atual += 1
-                
-                
-                sheet[f"A{str(linha_atual)}"] = unidade
-                sheet[f"B{str(linha_atual)}"] = quantidade
-                sheet[f"C{str(linha_atual)}"] = nome
-                sheet[f"E{str(linha_atual)}"] = valor_uni
-                sheet[f"G{str(linha_atual)}"] = valor_total
+    def new_service(self): #nome dos serviços so para aparecer no option menu
+        service = inputbox("Novo Serviço",("Digite o nome do Serviço"))
+
+        self.service_list.append(service)
+        if len(self.service_list)!=1: #BAIANO
+            self.option_serv.configure(values=self.service_list)
 
 
-                workbook.save("base.xlsx") ##para salvar
 
-                                
-               
+    def delete_service(self):
+        service_to_dlt= self.option_serv.get()
+        print(service_to_dlt)
+def main():
 
+    app = MainWindow()
+    app.mainloop()
 
- 
- 
 if __name__ == "__main__":
-    app = Janela()
-    # Runs the app
-    app.mainloop()    
+    main()
