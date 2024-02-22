@@ -41,12 +41,12 @@ class MainWindow(ctk.CTk):
         title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
         title_label.pack(pady=10)
 
-        self.bt_table = ctk.CTkButton(self.main_section, text="Novo Serviço")
-        self.bt_table.configure(fg_color="purple",
+        self.bt_serv = ctk.CTkButton(self.main_section, text="Novo Serviço", command= lambda:self.create_main_section())
+        self.bt_serv.configure(fg_color="purple",
                                 hover_color="blue",
                                 width=80,
                                 height=80)
-        self.bt_table.pack(side="top", pady=5)
+        self.bt_serv.pack(side="top", pady=5)
                
 
 
@@ -64,15 +64,14 @@ class MainWindow(ctk.CTk):
         section2_button.pack(pady=5, padx=10, fill="x")
 
     def create_main_section(self):
-        self.main_section = ctk.CTkFrame(self.master,)
-        self.main_section.pack(expand=True, fill="both", padx=20, pady=10)
 
-        title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
-        title_label.pack(pady=10)
+        self.new_service()
+        self.bt_serv.destroy()
 
-        self.option_table = ctk.CTkOptionMenu(self.main_section ,values=self.service_list)
-        self.option_table.configure(width=300)
-        self.option_table.pack(anchor="center")
+        self.option_serv = ctk.CTkOptionMenu(self.main_section ,
+                                             values=self.service_list)
+        self.option_serv.configure(width=300)
+        self.option_serv.pack(anchor="center")
 
 
         table_frame = ctk.CTkFrame(self.main_section)
@@ -82,12 +81,19 @@ class MainWindow(ctk.CTk):
         button_frame = ctk.CTkFrame(self.master,)
         button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
 
-        self.bt_table = ctk.CTkButton(button_frame, text="Novo Serviço")
-        self.bt_table.configure(fg_color="purple",
+        self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=self.new_service)
+        self.bt_serv.configure(fg_color="purple",
                                 hover_color="blue",
                                 width=80,
                                 height=80)
-        self.bt_table.pack(side="left", pady=5)
+        self.bt_serv.pack(side="left", pady=5)
+
+        self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=self.delete_service)
+        self.bt_del_serv.configure(fg_color="red",
+                                hover_color="black",
+                                width=80,
+                                height=80)
+        self.bt_del_serv.pack(side="left", pady=5)
 
         self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
         self.bt_item.configure(fg_color="green",
@@ -95,17 +101,25 @@ class MainWindow(ctk.CTk):
                                 height=80)
         self.bt_item.pack(side="right",pady=5)
 
-        # self.option_table = ctk.CTkOptionMenu(button_frame, values=["Table1","Table2"])
-        # self.option_table.pack(side="bottom")
 
-    def open_topLevel(self):
+
+    def open_topLevel(self): #new item
             if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
                 self.toplevel_window = TopLevelWindow(self,self.table)
             else:
                 self.toplevel_window.focus()
         
     
+    def new_service(self): #nome dos serviços so para aparecer no option menu
+        service = inputbox("Novo Serviço",("Digite o nome do Serviço"))
 
+        self.service_list.append(service)
+        if len(self.service_list)!=1: #BAIANO
+            self.option_serv.configure(values=self.service_list)
+
+    def delete_service(self):
+        service_to_dlt= self.option_serv.get()
+        print(service_to_dlt)
 def main():
 
     app = MainWindow()

@@ -101,4 +101,3 @@ class TopLevelWindow(ctk.CTkToplevel):
             self.entries[-1].grid()  # Reexibe a entrada de Valor Total
             
 
-  
