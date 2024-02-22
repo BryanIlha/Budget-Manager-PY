@@ -1,5 +1,8 @@
 
 import xlwings as xw
+from customtkinter import CTkInputDialog
+import customtkinter as ctk
+
 
 items_list = []
 index_counter = 0
@@ -58,3 +61,7 @@ def create_excel():
     sheet.book.save()
     sheet.book.close()
 
+def inputbox(title,text):
+    dialog = ctk.CTkInputDialog(text=text, title=title)
+    
+    return dialog.get_input()

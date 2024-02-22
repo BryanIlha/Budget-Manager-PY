@@ -3,7 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
 from objects import Table, TopLevelWindow #objetos como tabela e items
-from funcion import create_excel
+from funcion import create_excel, inputbox
 
 
 ctk.set_appearance_mode("dark")
@@ -15,9 +15,11 @@ ctk.set_default_color_theme("green")
 class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.service_list=[] #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
         
 
-       
+        self.toplevel_window = None #burocracia pra ter toplevel window
         
 
         self.title("Custom Tkinter App")
@@ -30,9 +32,8 @@ class MainWindow(ctk.CTk):
         
         self.create_sidebar()
         self.create_main_section()
-        self.toplevel_window = None
         
-
+       
 
 
     def create_sidebar(self):
@@ -45,7 +46,7 @@ class MainWindow(ctk.CTk):
         section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        section2_button = ctk.CTkButton(self.sidebar, text="Section 2",  )
+        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:self.first_service()  )
         section2_button.pack(pady=5, padx=10, fill="x")
 
     def create_main_section(self):
@@ -55,9 +56,9 @@ class MainWindow(ctk.CTk):
         title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
         title_label.pack(pady=10)
 
-        self.option_table = ctk.CTkOptionMenu(self.main_section ,values=["NAO FUNCIONA","NAO FUNCIONA"])
-        self.option_table.configure(width=300)
-        self.option_table.pack(anchor="center")
+        # self.option_table = ctk.CTkOptionMenu(self.main_section ,values=["NAO FUNCIONA","NAO FUNCIONA"])
+        # self.option_table.configure(width=300)
+        # self.option_table.pack(anchor="center")
 
 
         table_frame = ctk.CTkFrame(self.main_section)
