@@ -31,9 +31,23 @@ class MainWindow(ctk.CTk):
 
         
         self.create_sidebar()
-        self.create_main_section()
+        self.first_service()
         
-       
+        
+    def first_service(self):
+        self.main_section = ctk.CTkFrame(self.master,)
+        self.main_section.pack(expand=True, fill="both", padx=20, pady=10)
+
+        title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
+        title_label.pack(pady=10)
+
+        self.bt_table = ctk.CTkButton(self.main_section, text="Novo Serviço")
+        self.bt_table.configure(fg_color="purple",
+                                hover_color="blue",
+                                width=80,
+                                height=80)
+        self.bt_table.pack(side="top", pady=5)
+               
 
 
     def create_sidebar(self):
@@ -56,9 +70,9 @@ class MainWindow(ctk.CTk):
         title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
         title_label.pack(pady=10)
 
-        # self.option_table = ctk.CTkOptionMenu(self.main_section ,values=["NAO FUNCIONA","NAO FUNCIONA"])
-        # self.option_table.configure(width=300)
-        # self.option_table.pack(anchor="center")
+        self.option_table = ctk.CTkOptionMenu(self.main_section ,values=self.service_list)
+        self.option_table.configure(width=300)
+        self.option_table.pack(anchor="center")
 
 
         table_frame = ctk.CTkFrame(self.main_section)
