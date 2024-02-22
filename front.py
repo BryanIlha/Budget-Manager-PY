@@ -117,6 +117,8 @@ class MainWindow(ctk.CTk):
         if len(self.service_list)!=1: #BAIANO
             self.option_serv.configure(values=self.service_list)
 
+
+
     def delete_service(self):
         service_to_dlt= self.option_serv.get()
         print(service_to_dlt)
