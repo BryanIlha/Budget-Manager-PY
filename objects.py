@@ -71,22 +71,22 @@ class TopLevelWindow(ctk.CTkToplevel):
 
 
     def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
-        nome, uni, quant, uni_val, total_val  = [entry.get() for entry in self.entries]
+        self.nome, self.uni, quant, uni_val, self.total_val  = [entry.get() for entry in self.entries]
         
    
 
         if self.switch_var.get()=="on":
             try:
-                total_val = int(quant) * int(uni_val)
+                self.total_val = int(quant) * int(uni_val)
                 
             except:
                 print('deu ruim')#adicionar messagebox BRUNO
        
             
 
-        item_carat =nome, uni, quant, uni_val, total_val
         
-        new_item(Item,item_carat,self.table_instance) #criando um objeto com os valores obtido
+        
+        new_item(self,Item) #criando um objeto com os valores obtido
         self.destroy()
     
     def destroy(self):

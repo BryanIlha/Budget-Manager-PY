@@ -23,19 +23,45 @@ def init_excel():
         print("Não conseguiu abrir o arquivo Excel:", e)
 
             
-def new_item(Item,list_values,table_instance):
+def new_item(self,Item):
 
 
     # Unpack the list_values into individual arguments
-    nome, unidade, quantidade, valor_uni, valor_total = list_values
+    
 
     # Instantiate the Item object
-    item = Item(nome, unidade, quantidade, valor_uni, valor_total)
+    item = Item(self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total)
     items_list.append(item) #parte mega importante para ter uma lista dos objetos
-    add_to_table(item,table_instance)
+    add_to_table(item,self.table_instance)
 
+def new_service(self): #nome dos serviços so para aparecer no option menu
+        
+        service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
 
+        self.dict_serv[service_name] = []
 
+        if len(self.dict_serv)!=1: #BAIANO
+                    #sempre que for da update pegar index e lens
+
+            self.option_serv.configure(values=self.dict_serv)
+            dict_keys = list(self.dict_serv.keys())
+            current_index = dict_keys.index(self.option_serv.get())
+
+            self.update_service(current_index,dict_keys)
+
+            
+def delete_service(self):
+        #sempre que for da update pegar index e lens
+        dict_keys = list(self.dict_serv.keys())
+        current_index = dict_keys.index(self.option_serv.get())
+        
+        if len(self.dict_serv) ==1:
+            print("nao da dog so tem um") #MODAL
+        else:    
+            service_to_dlt= self.option_serv.get()
+            del self.dict_serv[service_to_dlt]
+            self.update_service(current_index,dict_keys) #dar update
+            print('apaguei o ',service_to_dlt) #MODAL
 
 
 

@@ -3,7 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
 from objects import Table, TopLevelWindow #objetos como tabela e items
-from funcion import create_excel, inputbox
+from funcion import create_excel, new_service, delete_service
 
 
 ctk.set_appearance_mode("dark")
@@ -65,7 +65,7 @@ class MainWindow(ctk.CTk):
 
     def create_main_section(self):
 
-        self.new_service()
+        new_service(self)
         self.bt_serv.destroy()
         dict_serv_keys = list(self.dict_serv.keys())
 
@@ -83,14 +83,14 @@ class MainWindow(ctk.CTk):
         button_frame = ctk.CTkFrame(self.master,)
         button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
 
-        self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=self.new_service)
+        self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=lambda: new_service(self))
         self.bt_serv.configure(fg_color="purple",
                                 hover_color="blue",
                                 width=80,
                                 height=80)
         self.bt_serv.pack(side="left", pady=5)
 
-        self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=self.delete_service)
+        self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
         self.bt_del_serv.configure(fg_color="red",
                                 hover_color="black",
                                 width=80,
@@ -112,36 +112,11 @@ class MainWindow(ctk.CTk):
                 self.toplevel_window.focus()
         
     
-    def new_service(self): #nome dos serviços so para aparecer no option menu
-        
-        service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
-
-        self.dict_serv[service_name] = []
-
-        if len(self.dict_serv)!=1: #BAIANO
-                    #sempre que for da update pegar index e lens
-
-            self.option_serv.configure(values=self.dict_serv)
-            dict_keys = list(self.dict_serv.keys())
-            current_index = dict_keys.index(self.option_serv.get())
-
-            self.update_service(current_index,dict_keys)
 
     def switch_service(self,choice):
         print(f'trocou por {choice}')
 
-    def delete_service(self):
-        #sempre que for da update pegar index e lens
-        dict_keys = list(self.dict_serv.keys())
-        current_index = dict_keys.index(self.option_serv.get())
-        
-        if len(self.dict_serv) ==1:
-            print("nao da dog so tem um") #MODAL
-        else:    
-            service_to_dlt= self.option_serv.get()
-            del self.dict_serv[service_to_dlt]
-            self.update_service(current_index,dict_keys) #dar update
-            print('apaguei o ',service_to_dlt) #MODAL
+
     
     def update_service(self,current_index,dict_keys):
     # Obtém as chaves atualizadas do dicionário
