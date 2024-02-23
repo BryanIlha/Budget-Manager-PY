@@ -120,31 +120,49 @@ class MainWindow(ctk.CTk):
         for serv in self.dict_serv:
             print(serv)
         if len(self.dict_serv)!=1: #BAIANO
+                    #sempre que for da update pegar index e lens
+
             self.option_serv.configure(values=self.dict_serv)
+            dict_keys = list(self.dict_serv.keys())
+            current_index = dict_keys.index(self.option_serv.get())
+
+            self.update_service(current_index,dict_keys)
 
     def switch_service(self,choice):
         print(f'trocou por {choice}')
 
     def delete_service(self):
+        #sempre que for da update pegar index e lens
+        dict_keys = list(self.dict_serv.keys())
+        current_index = dict_keys.index(self.option_serv.get())
+        
         if len(self.dict_serv) ==1:
             print("nao da dog so tem um") #MODAL
         else:    
             service_to_dlt= self.option_serv.get()
             del self.dict_serv[service_to_dlt]
-            self.update_option_menu()
+            self.update_service(current_index,dict_keys) #dar update
             print('apaguei o ',service_to_dlt) #MODAL
+    
+    def update_service(self,current_index,dict_keys):
+    # Obtém as chaves atualizadas do dicionário
+        
 
-
-    def update_option_menu(self):
         # Limpa o valor selecionado no OptionMenu
-    # Limpa o valor selecionado no OptionMenu
         self.option_serv.set('')
+        # Verifica se há chaves no dicionário
+        # Encontra a posição da chave atualmente selecionada no OptionMenu
+        
 
-        # Obtém as chaves atualizadas do dicionário
-        dict_keys = list(self.dict_serv.keys())
+            
+        # Calcula o índice da próxima chave no OptionMenu
+        next_index = (current_index + 1) % len(dict_keys)
+ 
+            
+        # Seleciona a próxima chave no OptionMenu
+        self.option_serv.set(dict_keys[next_index])
+        self.option_serv.configure(values=self.dict_serv)
 
-        # Atualiza os valores do OptionMenu
-        self.option_serv.configure(values=dict_keys)
 
 def main():
 
