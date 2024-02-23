@@ -117,8 +117,7 @@ class MainWindow(ctk.CTk):
         service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
 
         self.dict_serv[service_name] = []
-        for serv in self.dict_serv:
-            print(serv)
+
         if len(self.dict_serv)!=1: #BAIANO
                     #sempre que for da update pegar index e lens
 
