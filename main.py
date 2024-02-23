@@ -126,8 +126,26 @@ class MainWindow(ctk.CTk):
         print(f'trocou por {choice}')
 
     def delete_service(self):
-        service_to_dlt= self.option_serv.get()
-        print(service_to_dlt)
+        if len(self.dict_serv) ==1:
+            print("nao da dog so tem um") #MODAL
+        else:    
+            service_to_dlt= self.option_serv.get()
+            del self.dict_serv[service_to_dlt]
+            self.update_option_menu()
+            print('apaguei o ',service_to_dlt) #MODAL
+
+
+    def update_option_menu(self):
+        # Limpa o valor selecionado no OptionMenu
+    # Limpa o valor selecionado no OptionMenu
+        self.option_serv.set('')
+
+        # Obtém as chaves atualizadas do dicionário
+        dict_keys = list(self.dict_serv.keys())
+
+        # Atualiza os valores do OptionMenu
+        self.option_serv.configure(values=dict_keys)
+
 def main():
 
     app = MainWindow()
