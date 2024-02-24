@@ -16,6 +16,7 @@ class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
         self.dict_serv={} #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
         
 
@@ -106,8 +107,10 @@ class MainWindow(ctk.CTk):
 
 
     def open_topLevel(self): #new item
+            service_name=self.option_serv.get()
+            
             if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = TopLevelWindow(self,self.table)
+                self.toplevel_window = TopLevelWindow(self,self.table,service_name,self.dict_serv)
             else:
                 self.toplevel_window.focus()
         

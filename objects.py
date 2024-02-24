@@ -42,12 +42,12 @@ class Item: #objeto referente aos itens do orçamento
 
 
 class TopLevelWindow(ctk.CTkToplevel):
-    def __init__(self, master,table_instance,*args, **kwargs):
+    def __init__(self, master,table_instance,service_name,dict_serv,*args, **kwargs):
         super().__init__(master,*args, **kwargs)
         self.title("New Window")
         self.resizable(False, False)
-
-
+        self.dict_serv= dict_serv
+        self.service_name= service_name
         self.table_instance = table_instance
 
 
@@ -71,13 +71,13 @@ class TopLevelWindow(ctk.CTkToplevel):
 
 
     def get_entry_vals(self): #função para pegar os valores da entry e jogar em um objeto
-        self.nome, self.uni, quant, uni_val, self.total_val  = [entry.get() for entry in self.entries]
+        self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total  = [entry.get() for entry in self.entries]
         
    
 
         if self.switch_var.get()=="on":
             try:
-                self.total_val = int(quant) * int(uni_val)
+                self.total_val = int(self.quantidade) * int(self.valor_uni)
                 
             except:
                 print('deu ruim')#adicionar messagebox BRUNO
@@ -86,7 +86,7 @@ class TopLevelWindow(ctk.CTkToplevel):
 
         
         
-        new_item(self,Item) #criando um objeto com os valores obtido
+        new_item(self,Item,self.service_name) #criando um objeto com os valores obtido
         self.destroy()
     
     def destroy(self):
