@@ -37,18 +37,21 @@ def new_item(self,Item):
 def new_service(self): #nome dos serviços so para aparecer no option menu
         
         service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
-
+        
         self.dict_serv[service_name] = []
 
         if len(self.dict_serv)!=1: #BAIANO
                     #sempre que for da update pegar index e lens
 
             self.option_serv.configure(values=self.dict_serv)
-            dict_keys = list(self.dict_serv.keys())
-            current_index = dict_keys.index(self.option_serv.get())
+
+            
+            dict_keys = list(self.dict_serv.keys())# argumentos do update
+            current_index = dict_keys.index(self.option_serv.get())# argumentos do update
 
             self.update_service(current_index,dict_keys)
-
+        else:
+             print('botar modal aqui para falar que so tem um')
             
 def delete_service(self):
         #sempre que for da update pegar index e lens
