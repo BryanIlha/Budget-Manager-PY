@@ -3,7 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
 from objects import Table, TopLevelWindow #objetos como tabela e items
-from funcion import create_excel, new_service, delete_service
+from funcion import create_excel, new_service, delete_service , clear_table, change_service
 
 
 ctk.set_appearance_mode("dark")
@@ -61,7 +61,7 @@ class MainWindow(ctk.CTk):
         section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:self.first_service()  )
+        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:clear_table(self)  ) #tirar daqui depois 
         section2_button.pack(pady=5, padx=10, fill="x")
 
     def create_main_section(self):
@@ -79,7 +79,7 @@ class MainWindow(ctk.CTk):
 
         table_frame = ctk.CTkFrame(self.main_section)
         table_frame.pack(expand=True, fill="both", padx=10, pady=10)
-        self.table = Table(table_frame)
+        self.table_instance = Table(table_frame)
 
         button_frame = ctk.CTkFrame(self.master,)
         button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
@@ -110,13 +110,14 @@ class MainWindow(ctk.CTk):
             service_name=self.option_serv.get()
             
             if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = TopLevelWindow(self,self.table,service_name,self.dict_serv)
+                self.toplevel_window = TopLevelWindow(self,self.table_instance,service_name,self.dict_serv)
             else:
                 self.toplevel_window.focus()
         
     
 
-    def switch_service(self,choice):
+    def switch_service(self,choice): #aqui filho da puta
+        change_service(self)
         print(f'trocou por {choice}')
 
 
@@ -139,6 +140,7 @@ class MainWindow(ctk.CTk):
         # Seleciona a próxima chave no OptionMenu
         self.option_serv.set(dict_keys[next_index])
         self.option_serv.configure(values=self.dict_serv)
+        change_service(self)
 
 
 def main():

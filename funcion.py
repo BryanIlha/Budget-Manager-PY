@@ -22,6 +22,7 @@ def init_excel():
     except Exception as e:
         print("Não conseguiu abrir o arquivo Excel:", e)
 
+
             
 def new_item(self,Item,service_name):
 
@@ -68,8 +69,20 @@ def delete_service(self):
             self.update_service(current_index,dict_keys) #dar update
             print('apaguei o ',service_to_dlt) #MODAL
 
+def change_service(self):
+    clear_table(self)
 
+    service_name=self.option_serv.get()
+    service_content = self.dict_serv[service_name]
+    for item in service_content:
+        add_to_table(item, self.table_instance)
 
+    
+
+    pass
+def clear_table(self):
+    # Limpa todos os itens existentes na tabela
+    self.table_instance.treeview.delete(*self.table_instance.treeview.get_children())
 
 def add_to_table(item, table_instance): #use the item object into the table
     
