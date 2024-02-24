@@ -16,7 +16,7 @@ class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
+        self.simple_counter = 0 #revisar first time counter
         self.dict_serv={} #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
         
 
@@ -49,7 +49,7 @@ class MainWindow(ctk.CTk):
                                 height=80)
         self.bt_serv.pack(side="top", pady=5)
                
-
+    
 
     def create_sidebar(self):
         self.sidebar = ctk.CTkFrame(self.master, width=200)
@@ -66,43 +66,43 @@ class MainWindow(ctk.CTk):
 
     def create_main_section(self):
 
-        new_service(self)
-        self.bt_serv.destroy()
-        dict_serv_keys = list(self.dict_serv.keys())
+        if new_service(self) is True:
+            self.bt_serv.destroy()
+            dict_serv_keys = list(self.dict_serv.keys())
 
-        self.option_serv = ctk.CTkOptionMenu(self.main_section ,
-                                             values=dict_serv_keys,
-                                             command=self.switch_service)
-        self.option_serv.configure(width=300)
-        self.option_serv.pack(anchor="center")
+            self.option_serv = ctk.CTkOptionMenu(self.main_section ,
+                                                values=dict_serv_keys,
+                                                command=self.switch_service)
+            self.option_serv.configure(width=300)
+            self.option_serv.pack(anchor="center")
 
 
-        table_frame = ctk.CTkFrame(self.main_section)
-        table_frame.pack(expand=True, fill="both", padx=10, pady=10)
-        self.table_instance = Table(table_frame)
+            table_frame = ctk.CTkFrame(self.main_section)
+            table_frame.pack(expand=True, fill="both", padx=10, pady=10)
+            self.table_instance = Table(table_frame)
 
-        button_frame = ctk.CTkFrame(self.master,)
-        button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
+            button_frame = ctk.CTkFrame(self.master,)
+            button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
 
-        self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=lambda: new_service(self))
-        self.bt_serv.configure(fg_color="purple",
-                                hover_color="blue",
-                                width=80,
-                                height=80)
-        self.bt_serv.pack(side="left", pady=5)
+            self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=lambda: new_service(self))
+            self.bt_serv.configure(fg_color="purple",
+                                    hover_color="blue",
+                                    width=80,
+                                    height=80)
+            self.bt_serv.pack(side="left", pady=5)
 
-        self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
-        self.bt_del_serv.configure(fg_color="red",
-                                hover_color="black",
-                                width=80,
-                                height=80)
-        self.bt_del_serv.pack(side="left", pady=5)
+            self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
+            self.bt_del_serv.configure(fg_color="red",
+                                    hover_color="black",
+                                    width=80,
+                                    height=80)
+            self.bt_del_serv.pack(side="left", pady=5)
 
-        self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
-        self.bt_item.configure(fg_color="green",
-                                width=80,
-                                height=80)
-        self.bt_item.pack(side="right",pady=5)
+            self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
+            self.bt_item.configure(fg_color="green",
+                                    width=80,
+                                    height=80)
+            self.bt_item.pack(side="right",pady=5)
 
 
 
@@ -116,7 +116,7 @@ class MainWindow(ctk.CTk):
         
     
 
-    def switch_service(self,choice): #aqui filho da puta
+    def switch_service(self,choice): #precisa?
         change_service(self)
         print(f'trocou por {choice}')
 
@@ -141,6 +141,7 @@ class MainWindow(ctk.CTk):
         self.option_serv.set(dict_keys[next_index])
         self.option_serv.configure(values=self.dict_serv)
         change_service(self)
+
 
 
 def main():

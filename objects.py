@@ -77,7 +77,8 @@ class TopLevelWindow(ctk.CTkToplevel):
 
         if self.switch_var.get()=="on":
             try:
-                self.total_val = int(self.quantidade) * int(self.valor_uni)
+                self.valor_total = int(self.quantidade) * int(self.valor_uni)
+                
                 
             except:
                 print('deu ruim')#adicionar messagebox BRUNO

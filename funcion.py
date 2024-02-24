@@ -40,21 +40,28 @@ def new_item(self,Item,service_name):
 def new_service(self): #nome dos serviços so para aparecer no option menu
         
         self.service_name = inputbox("Novo Serviço",("Digite o nome do Serviço")) # o service é um array do objeto item
-        
-        self.dict_serv[self.service_name] = []
+        if self.service_name is not None:
+             
+  
+            self.dict_serv[self.service_name] = []
 
-        if len(self.dict_serv)!=1: #BAIANO
-                    #sempre que for da update pegar index e lens
+            if len(self.dict_serv)!=1 : #BAIANO
+                #sempre que for da update pegar index e lens
+                
 
-            self.option_serv.configure(values=self.dict_serv)
+                self.option_serv.configure(values=self.dict_serv)
 
-            
-            dict_keys = list(self.dict_serv.keys())# argumentos do update
-            current_index = dict_keys.index(self.option_serv.get())# argumentos do update
+                
+                dict_keys = list(self.dict_serv.keys())# argumentos do update
+                current_index = dict_keys.index(self.option_serv.get())# argumentos do update
 
-            self.update_service(current_index,dict_keys)
+                self.update_service(current_index,dict_keys)
+            return True
         else:
-             print('botar modal aqui para falar que so tem um')
+            print("MODAL AQUI BRUNO PRA DIZER QUE FOI CANCELADO")
+            return False
+        
+
             
 def delete_service(self):
         #sempre que for da update pegar index e lens
@@ -105,7 +112,9 @@ def create_excel():
     sheet.book.save()
     sheet.book.close()
 
-def inputbox(title,text):
+def inputbox(title, text):
     dialog = ctk.CTkInputDialog(text=text, title=title)
+    user_input = dialog.get_input()
     
-    return dialog.get_input()
+    return user_input
+    
