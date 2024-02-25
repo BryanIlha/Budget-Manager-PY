@@ -1,4 +1,5 @@
 from tkinter import ttk
+import tkinter as tk
 import customtkinter as ctk
 from funcion import new_item, add_to_table , obter_nomes_saves
 
@@ -30,6 +31,51 @@ class Table():
         for col in columns:
             self.treeview.heading(col, text=col)
             self.treeview.column(col, width=20)
+        
+        # Vincula o evento de clique duplo na tabela à função 'on_double_click'
+        self.treeview.bind('<Double-1>', self.on_double_click)
+
+    def on_double_click(self, event):
+        item = self.treeview.selection()
+        if item:
+            # Obtem o índice numérico da coluna onde o clique duplo ocorreu
+            col_id = int(self.treeview.identify_column(event.x).split("#")[-1]) - 1
+            row_id = self.treeview.identify_row(event.y)
+            
+            # Verifica se a coluna clicada é editável (por exemplo, todas as colunas são editáveis neste exemplo)
+            if col_id in range(len(self.treeview["columns"])):
+                self.edit_cell(item, col_id)
+
+    def edit_cell(self, item, col_id):
+    # Obtém o valor atual da célula
+        current_value = self.treeview.set(item, self.treeview["columns"][col_id])
+
+        # Remove qualquer widget de edição existente na célula
+        for child in self.treeview.get_children(item):
+            self.treeview.delete(child)
+
+        # Cria um widget Entry para edição
+        entry = tk.Entry(self.treeview, bd=1, relief='solid')
+        entry.insert(0, current_value)
+
+        # Define os eventos para finalizar ou cancelar a edição
+        def end_editing(event=None):
+            new_value = entry.get()
+            self.treeview.set(item, self.treeview["columns"][col_id], new_value)
+            entry.destroy()
+
+        def cancel_editing(event=None):
+            entry.destroy()
+
+        entry.bind('<Return>', end_editing)
+        entry.bind('<Escape>', cancel_editing)
+
+        # Insere o Entry na célula para edição
+        cell_bbox = self.treeview.bbox(item, column=self.treeview["columns"][col_id])
+        if cell_bbox:
+            x, y, width, height = cell_bbox
+            entry.place(x=x, y=y, width=width, height=height)
+            entry.focus_set()
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade,
@@ -54,7 +100,7 @@ class Item: #objeto referente aos itens do orçamento
 class TopLevelWindow(ctk.CTkToplevel):
     def __init__(self, master,table_instance,service_name,dict_serv,*args, **kwargs):
         super().__init__(master,*args, **kwargs)
-        self.title("New Window")
+        self.title("New Item")
         self.resizable(False, False)
         self.dict_serv= dict_serv
         self.service_name= service_name
@@ -134,4 +180,5 @@ class LoadWindow(ctk.CTkToplevel):
         self.choosed_load = self.load_optmenu.get()
         
         self.destroy()  # Destruir o TopLevel
-        
+
+
