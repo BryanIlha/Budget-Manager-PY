@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
-from objects import Table, TopLevelWindow,Item #objetos como tabela e items
+from objects import Table, TopLevelWindow,Item,LoadWindow #objetos como tabela e items
 from funcion import create_excel, new_service, delete_service , clear_table, change_service, save_dict, load_dict
 
 
@@ -64,7 +64,7 @@ class MainWindow(ctk.CTk):
         save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self)  ) #tirar daqui depois 
         save_btn.pack(pady=5, padx=10, fill="x")
 
-        load_btn = ctk.CTkButton(self.sidebar, text="Carregar", command= lambda:load_dict(self,Item)  ) #tirar daqui depois 
+        load_btn = ctk.CTkButton(self.sidebar, text="Carregar", command= lambda:load_dict(self,Item,LoadWindow)  ) #tirar daqui depois 
         load_btn.pack(pady=5, padx=10, fill="x")
         self.button_frame = ctk.CTkFrame(self.master,)
 

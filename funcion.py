@@ -153,35 +153,56 @@ def save_dict(self):
 
 
 
-def load_dict(self,Item):  #tem que transformar os arquivos do json de dcit para objeto
+def load_dict(self, Item, Class):
+    file_to_load = open_load(self, Class)
+    print(file_to_load)
     self.clean_frame(self.main_section)
-
-    # self.clean_frame(self.button_frame)
     self.button_frame.destroy()
          
-
     with open('save.json', 'r') as arquivo:
         json_data = json.load(arquivo)
+        
+        # Limpa o dicionário existente
         self.dict_serv.clear()
         for chave, lista_itens_json in json_data.items():
-            lista_itens = []
-            for item_json in lista_itens_json:
-                item = Item(
-                    nome=item_json['nome'],
-                    unidade=item_json['unidade'],
-                    quantidade=item_json['quantidade'],
-                    valor_uni=item_json['valor_uni'],
-                    valor_total=item_json['valor_total']    
-                )
-                lista_itens.append(item)
-            self.dict_serv[chave] = lista_itens
-    
-    
+            if chave in file_to_load:
+                print("este é o save",chave)
+                
+                for nome_servico, lista_servicos in lista_itens_json.items():
+                    lista_itens = []
+                    
+
+                    print("Nome do Serviço:", nome_servico)
+                    for item_json in lista_servicos:
+                        item = Item(
+                            nome=item_json['nome'],
+                            unidade=item_json['unidade'],
+                            quantidade=item_json['quantidade'],
+                            valor_uni=item_json['valor_uni'],
+                            valor_total=item_json['valor_total']
+                        )
+                        lista_itens.append(item)
+                    print("este sao os itens: ", lista_itens,"dentro de : ",nome_servico)                
+                    self.dict_serv[nome_servico] = lista_itens
+
     self.create_main_section()
     change_service(self)
 
-# def open_load(self):
-#         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-#             self.toplevel_window = Load(self)  # create window if its None or destroyed
-#         else:
-#             self.toplevel_window.focus()  # if window exists focus it
+
+def open_load(self, Class):
+    load_window = Class(self)
+    load_window.wait_window()  # Aguarda até que a janela seja fechada
+    return load_window.choosed_load
+
+
+def obter_nomes_saves():
+    # Verifica se o arquivo save.json está vazio
+    with open('save.json', 'r') as arquivo:
+        conteudo = arquivo.read()
+        if conteudo.strip() == "":
+            return []
+        else:
+            dados_existentes = json.loads(conteudo)
+
+    # Retorna os nomes dos saves como uma lista
+    return list(dados_existentes.keys())
