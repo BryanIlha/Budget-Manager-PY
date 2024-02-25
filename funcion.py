@@ -124,13 +124,25 @@ def inputbox(title, text):
 def servico_para_json(servico):
     return [item.to_dict() for item in servico]
 
+
+
+
 def save_dict(self):
     dicionario_servicos_json = {key: servico_para_json(value) for key, value in self.dict_serv.items()}
     with open('save.json','a') as arquivo:
           json.dump(dicionario_servicos_json, arquivo)
 
 
+
+
+
 def load_dict(self,Item):  #tem que transformar os arquivos do json de dcit para objeto
+    self.clean_frame(self.main_section)
+
+    # self.clean_frame(self.button_frame)
+    self.button_frame.destroy()
+         
+
     with open('save.json', 'r') as arquivo:
         json_data = json.load(arquivo)
         self.dict_serv.clear()
@@ -146,5 +158,8 @@ def load_dict(self,Item):  #tem que transformar os arquivos do json de dcit para
                 )
                 lista_itens.append(item)
             self.dict_serv[chave] = lista_itens
-    print(self.dict_serv)
-    self.create_beta()
+    
+    
+    self.create_main_section()
+    change_service(self)
+
