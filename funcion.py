@@ -36,7 +36,7 @@ def new_item(self,Item,service_name):
     # Instantiate the Item object
     item = Item(self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total)
     self.dict_serv[self.service_name].append(item) #parte mega importante para ter uma lista dos objetos
-    print("vou adicionar ao service ",service_name )
+    
 
     add_to_table(item,self.table_instance)
 
@@ -84,7 +84,7 @@ def change_service(self):
 
     service_name=self.option_serv.get()
     service_content = self.dict_serv[service_name]
-    print(service_content)
+    
     for item in service_content:
         add_to_table(item, self.table_instance)
 
@@ -154,8 +154,8 @@ def save_dict(self):
 
 
 def load_dict(self, Item, Class):
-    file_to_load = open_load(self, Class)
-    print(file_to_load)
+    save_to_load = open_load(self, Class)
+    
     self.clean_frame(self.main_section)
     self.button_frame.destroy()
          
@@ -164,16 +164,16 @@ def load_dict(self, Item, Class):
         
         # Limpa o dicionário existente
         self.dict_serv.clear()
-        for chave, lista_itens_json in json_data.items():
-            if chave in file_to_load:
-                print("este é o save",chave)
+        for save, lista_itens_json in json_data.items():
+            if save in save_to_load:
                 
-                for nome_servico, lista_servicos in lista_itens_json.items():
+                
+                for serv_name, serv_list in lista_itens_json.items():
                     lista_itens = []
                     
 
-                    print("Nome do Serviço:", nome_servico)
-                    for item_json in lista_servicos:
+                    
+                    for item_json in serv_list:
                         item = Item(
                             nome=item_json['nome'],
                             unidade=item_json['unidade'],
@@ -182,8 +182,8 @@ def load_dict(self, Item, Class):
                             valor_total=item_json['valor_total']
                         )
                         lista_itens.append(item)
-                    print("este sao os itens: ", lista_itens,"dentro de : ",nome_servico)                
-                    self.dict_serv[nome_servico] = lista_itens
+                                   
+                    self.dict_serv[serv_name] = lista_itens
 
     self.create_main_section()
     change_service(self)

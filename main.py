@@ -125,7 +125,7 @@ class MainWindow(ctk.CTk):
 
     def switch_service(self,choice): #precisa?
         change_service(self)
-        print(f'trocou por {choice}')
+        
 
 
     

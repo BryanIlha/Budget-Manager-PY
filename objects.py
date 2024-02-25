@@ -120,10 +120,10 @@ class LoadWindow(ctk.CTkToplevel):
         self.label = ctk.CTkLabel(self, text="Escolha o Save")
         self.label.pack(padx=20, pady=20)
 
-        save = obter_nomes_saves()
-        print(save)
+        saves = obter_nomes_saves()
+        
 
-        self.load_optmenu = ctk.CTkOptionMenu(self, values=save)
+        self.load_optmenu = ctk.CTkOptionMenu(self, values=saves)
         self.load_optmenu.pack()
 
         self.get_load_btn= ctk.CTkButton(self,text='CARREGAR',command=self.get_load)
