@@ -61,7 +61,7 @@ class MainWindow(ctk.CTk):
         section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel()) #nao funciona
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self,Item)  ) #tirar daqui depois 
+        save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self)  ) #tirar daqui depois 
         save_btn.pack(pady=5, padx=10, fill="x")
 
         load_btn = ctk.CTkButton(self.sidebar, text="Carregar", command= lambda:load_dict(self,Item)  ) #tirar daqui depois 

@@ -39,7 +39,7 @@ class Item: #objeto referente aos itens do orçamento
         self.quantidade = quantidade
         self.valor_uni = valor_uni
         self.valor_total = valor_total
-        
+
     def to_dict(self): #iterar o objeto para jogar no json depois
         return {
             'nome': self.nome,
@@ -112,3 +112,11 @@ class TopLevelWindow(ctk.CTkToplevel):
             self.entries[-1].grid()  # Reexibe a entrada de Valor Total
             
 
+# class Load(ctk.CTkToplevel):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.geometry("400x300")
+
+#         self.label = ctk.CTkLabel(self, text="ToplevelWindow")
+#         self.label.pack(padx=20, pady=20)
+#         teste_btn = ctk.CTkButton(self, text="Adicionar",command= self.destroy())

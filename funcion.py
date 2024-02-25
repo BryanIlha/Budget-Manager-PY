@@ -6,6 +6,7 @@ import json
 
 
 
+
 items_list = []
 index_counter = 0
 
@@ -125,12 +126,28 @@ def servico_para_json(servico):
     return [item.to_dict() for item in servico]
 
 
-
-
 def save_dict(self):
+    # Solicita ao usuário que insira o nome do save
+    nome_do_save = inputbox("Novo Save","Digite o nome do save: ")
+
+    # Verifica se o arquivo save.json está vazio
+    with open('save.json', 'r') as arquivo:
+        conteudo = arquivo.read()
+        if conteudo.strip() == "":
+            dados_existentes = {}
+        else:
+            dados_existentes = json.loads(conteudo)
+
+    # Prepara os novos dados a serem salvos
     dicionario_servicos_json = {key: servico_para_json(value) for key, value in self.dict_serv.items()}
-    with open('save.json','a') as arquivo:
-          json.dump(dicionario_servicos_json, arquivo)
+
+    # Adiciona os novos dados ao dicionário existente usando o nome do save como chave
+    dados_existentes[nome_do_save] = dicionario_servicos_json
+
+    # Salva o dicionário atualizado de volta no arquivo save.json
+    with open('save.json', 'w') as arquivo:
+        json.dump(dados_existentes, arquivo)
+
 
 
 
@@ -163,3 +180,8 @@ def load_dict(self,Item):  #tem que transformar os arquivos do json de dcit para
     self.create_main_section()
     change_service(self)
 
+# def open_load(self):
+#         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+#             self.toplevel_window = Load(self)  # create window if its None or destroyed
+#         else:
+#             self.toplevel_window.focus()  # if window exists focus it
