@@ -2,6 +2,8 @@
 import xlwings as xw
 from customtkinter import CTkInputDialog
 import customtkinter as ctk
+import json
+
 
 
 items_list = []
@@ -81,12 +83,13 @@ def change_service(self):
 
     service_name=self.option_serv.get()
     service_content = self.dict_serv[service_name]
+    print(service_content)
     for item in service_content:
         add_to_table(item, self.table_instance)
 
     
 
-    pass
+    
 def clear_table(self):
     # Limpa todos os itens existentes na tabela
     self.table_instance.treeview.delete(*self.table_instance.treeview.get_children())
@@ -118,3 +121,30 @@ def inputbox(title, text):
     
     return user_input
     
+def servico_para_json(servico):
+    return [item.to_dict() for item in servico]
+
+def save_dict(self):
+    dicionario_servicos_json = {key: servico_para_json(value) for key, value in self.dict_serv.items()}
+    with open('save.json','a') as arquivo:
+          json.dump(dicionario_servicos_json, arquivo)
+
+
+def load_dict(self,Item):  #tem que transformar os arquivos do json de dcit para objeto
+    with open('save.json', 'r') as arquivo:
+        json_data = json.load(arquivo)
+        self.dict_serv.clear()
+        for chave, lista_itens_json in json_data.items():
+            lista_itens = []
+            for item_json in lista_itens_json:
+                item = Item(
+                    nome=item_json['nome'],
+                    unidade=item_json['unidade'],
+                    quantidade=item_json['quantidade'],
+                    valor_uni=item_json['valor_uni'],
+                    valor_total=item_json['valor_total']    
+                )
+                lista_itens.append(item)
+            self.dict_serv[chave] = lista_itens
+    print(self.dict_serv)
+    self.create_beta()

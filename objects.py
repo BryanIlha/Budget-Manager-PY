@@ -39,6 +39,16 @@ class Item: #objeto referente aos itens do orçamento
         self.quantidade = quantidade
         self.valor_uni = valor_uni
         self.valor_total = valor_total
+        
+    def to_dict(self): #iterar o objeto para jogar no json depois
+        return {
+            'nome': self.nome,
+            'unidade': self.unidade,
+            'quantidade': self.quantidade,
+            'valor_uni': self.valor_uni,
+            'valor_total': self.valor_total
+        }
+
 
 
 class TopLevelWindow(ctk.CTkToplevel):

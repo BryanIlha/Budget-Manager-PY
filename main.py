@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
-from objects import Table, TopLevelWindow #objetos como tabela e items
-from funcion import create_excel, new_service, delete_service , clear_table, change_service
+from objects import Table, TopLevelWindow,Item #objetos como tabela e items
+from funcion import create_excel, new_service, delete_service , clear_table, change_service, save_dict, load_dict
 
 
 ctk.set_appearance_mode("dark")
@@ -58,15 +58,16 @@ class MainWindow(ctk.CTk):
         profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
         profile_photo.pack(pady=20)
 
-        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
+        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel()) #nao funciona
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:clear_table(self)  ) #tirar daqui depois 
+        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:load_dict(self,Item)  ) #tirar daqui depois 
         section2_button.pack(pady=5, padx=10, fill="x")
 
     def create_main_section(self):
+        
 
-        if new_service(self) is True:
+        if new_service(self) is True or self.dict_serv !={}:
             self.bt_serv.destroy()
             dict_serv_keys = list(self.dict_serv.keys())
 
@@ -103,7 +104,43 @@ class MainWindow(ctk.CTk):
                                     width=80,
                                     height=80)
             self.bt_item.pack(side="right",pady=5)
+    def create_beta(self):
+            self.bt_serv.destroy()
+            dict_serv_keys = list(self.dict_serv.keys())
 
+            self.option_serv = ctk.CTkOptionMenu(self.main_section ,
+                                                values=dict_serv_keys,
+                                                command=self.switch_service)
+            self.option_serv.configure(width=300)
+            self.option_serv.pack(anchor="center")
+
+
+            table_frame = ctk.CTkFrame(self.main_section)
+            table_frame.pack(expand=True, fill="both", padx=10, pady=10)
+            self.table_instance = Table(table_frame)
+
+            button_frame = ctk.CTkFrame(self.master,)
+            button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
+
+            self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=lambda: new_service(self))
+            self.bt_serv.configure(fg_color="purple",
+                                    hover_color="blue",
+                                    width=80,
+                                    height=80)
+            self.bt_serv.pack(side="left", pady=5)
+
+            self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
+            self.bt_del_serv.configure(fg_color="red",
+                                    hover_color="black",
+                                    width=80,
+                                    height=80)
+            self.bt_del_serv.pack(side="left", pady=5)
+
+            self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
+            self.bt_item.configure(fg_color="green",
+                                    width=80,
+                                    height=80)
+            self.bt_item.pack(side="right",pady=5)
 
 
     def open_topLevel(self): #new item
