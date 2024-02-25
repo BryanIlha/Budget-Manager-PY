@@ -1,6 +1,6 @@
 from tkinter import ttk
 import customtkinter as ctk
-from funcion import new_item, add_to_table
+from funcion import new_item, add_to_table , obter_nomes_saves
 
 
 class Table():
@@ -39,6 +39,16 @@ class Item: #objeto referente aos itens do orçamento
         self.quantidade = quantidade
         self.valor_uni = valor_uni
         self.valor_total = valor_total
+
+    def to_dict(self): #iterar o objeto para jogar no json depois
+        return {
+            'nome': self.nome,
+            'unidade': self.unidade,
+            'quantidade': self.quantidade,
+            'valor_uni': self.valor_uni,
+            'valor_total': self.valor_total
+        }
+
 
 
 class TopLevelWindow(ctk.CTkToplevel):
@@ -102,3 +112,26 @@ class TopLevelWindow(ctk.CTkToplevel):
             self.entries[-1].grid()  # Reexibe a entrada de Valor Total
             
 
+class LoadWindow(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("400x300")
+
+        self.label = ctk.CTkLabel(self, text="Escolha o Save")
+        self.label.pack(padx=20, pady=20)
+
+        saves = obter_nomes_saves()
+        
+
+        self.load_optmenu = ctk.CTkOptionMenu(self, values=saves)
+        self.load_optmenu.pack()
+
+        self.get_load_btn= ctk.CTkButton(self,text='CARREGAR',command=self.get_load)
+        self.get_load_btn.pack()
+
+
+    def get_load(self):
+        self.choosed_load = self.load_optmenu.get()
+        
+        self.destroy()  # Destruir o TopLevel
+        

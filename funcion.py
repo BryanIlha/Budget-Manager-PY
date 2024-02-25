@@ -2,6 +2,9 @@
 import xlwings as xw
 from customtkinter import CTkInputDialog
 import customtkinter as ctk
+import json
+
+
 
 
 items_list = []
@@ -33,7 +36,7 @@ def new_item(self,Item,service_name):
     # Instantiate the Item object
     item = Item(self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total)
     self.dict_serv[self.service_name].append(item) #parte mega importante para ter uma lista dos objetos
-    print("vou adicionar ao service ",service_name )
+    
 
     add_to_table(item,self.table_instance)
 
@@ -81,12 +84,13 @@ def change_service(self):
 
     service_name=self.option_serv.get()
     service_content = self.dict_serv[service_name]
+    
     for item in service_content:
         add_to_table(item, self.table_instance)
 
     
 
-    pass
+    
 def clear_table(self):
     # Limpa todos os itens existentes na tabela
     self.table_instance.treeview.delete(*self.table_instance.treeview.get_children())
@@ -118,3 +122,87 @@ def inputbox(title, text):
     
     return user_input
     
+def servico_para_json(servico):
+    return [item.to_dict() for item in servico]
+
+
+def save_dict(self):
+    # Solicita ao usuário que insira o nome do save
+    nome_do_save = inputbox("Novo Save","Digite o nome do save: ")
+
+    # Verifica se o arquivo save.json está vazio
+    with open('save.json', 'r') as arquivo:
+        conteudo = arquivo.read()
+        if conteudo.strip() == "":
+            dados_existentes = {}
+        else:
+            dados_existentes = json.loads(conteudo)
+
+    # Prepara os novos dados a serem salvos
+    dicionario_servicos_json = {key: servico_para_json(value) for key, value in self.dict_serv.items()}
+
+    # Adiciona os novos dados ao dicionário existente usando o nome do save como chave
+    dados_existentes[nome_do_save] = dicionario_servicos_json
+
+    # Salva o dicionário atualizado de volta no arquivo save.json
+    with open('save.json', 'w') as arquivo:
+        json.dump(dados_existentes, arquivo)
+
+
+
+
+
+
+def load_dict(self, Item, Class):
+    save_to_load = open_load(self, Class)
+    
+    self.clean_frame(self.main_section)
+    self.button_frame.destroy()
+         
+    with open('save.json', 'r') as arquivo:
+        json_data = json.load(arquivo)
+        
+        # Limpa o dicionário existente
+        self.dict_serv.clear()
+        for save, lista_itens_json in json_data.items():
+            if save in save_to_load:
+                
+                
+                for serv_name, serv_list in lista_itens_json.items():
+                    lista_itens = []
+                    
+
+                    
+                    for item_json in serv_list:
+                        item = Item(
+                            nome=item_json['nome'],
+                            unidade=item_json['unidade'],
+                            quantidade=item_json['quantidade'],
+                            valor_uni=item_json['valor_uni'],
+                            valor_total=item_json['valor_total']
+                        )
+                        lista_itens.append(item)
+                                   
+                    self.dict_serv[serv_name] = lista_itens
+
+    self.create_main_section()
+    change_service(self)
+
+
+def open_load(self, Class):
+    load_window = Class(self)
+    load_window.wait_window()  # Aguarda até que a janela seja fechada
+    return load_window.choosed_load
+
+
+def obter_nomes_saves():
+    # Verifica se o arquivo save.json está vazio
+    with open('save.json', 'r') as arquivo:
+        conteudo = arquivo.read()
+        if conteudo.strip() == "":
+            return []
+        else:
+            dados_existentes = json.loads(conteudo)
+
+    # Retorna os nomes dos saves como uma lista
+    return list(dados_existentes.keys())

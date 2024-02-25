@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
-from objects import Table, TopLevelWindow #objetos como tabela e items
-from funcion import create_excel, new_service, delete_service , clear_table, change_service
+from objects import Table, TopLevelWindow,Item,LoadWindow #objetos como tabela e items
+from funcion import create_excel, new_service, delete_service , clear_table, change_service, save_dict, load_dict
 
 
 ctk.set_appearance_mode("dark")
@@ -19,7 +19,7 @@ class MainWindow(ctk.CTk):
         self.simple_counter = 0 #revisar first time counter
         self.dict_serv={} #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
         
-
+        # self.self.button_frame= None
         self.toplevel_window = None #burocracia pra ter toplevel window
         
 
@@ -42,7 +42,7 @@ class MainWindow(ctk.CTk):
         title_label = ctk.CTkLabel(self.main_section, text="Gerenciador de orçamentos", font=("Arial", 20))
         title_label.pack(pady=10)
 
-        self.bt_serv = ctk.CTkButton(self.main_section, text="Novo Serviço", command= lambda:self.create_main_section())
+        self.bt_serv = ctk.CTkButton(self.main_section, text="Novo Serviço", command= lambda:self.first_serv())
         self.bt_serv.configure(fg_color="purple",
                                 hover_color="blue",
                                 width=80,
@@ -58,15 +58,23 @@ class MainWindow(ctk.CTk):
         profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
         profile_photo.pack(pady=20)
 
-        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel())
+        section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_excel()) #nao funciona
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        section2_button = ctk.CTkButton(self.sidebar, text="Section 2", command= lambda:clear_table(self)  ) #tirar daqui depois 
-        section2_button.pack(pady=5, padx=10, fill="x")
+        save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self)  ) #tirar daqui depois 
+        save_btn.pack(pady=5, padx=10, fill="x")
 
+        load_btn = ctk.CTkButton(self.sidebar, text="Carregar", command= lambda:load_dict(self,Item,LoadWindow)  ) #tirar daqui depois 
+        load_btn.pack(pady=5, padx=10, fill="x")
+        self.button_frame = ctk.CTkFrame(self.master,)
+
+    def first_serv(self):
+        
+
+        if new_service(self) is True or self.dict_serv !={}:
+           self.create_main_section()
+            
     def create_main_section(self):
-
-        if new_service(self) is True:
             self.bt_serv.destroy()
             dict_serv_keys = list(self.dict_serv.keys())
 
@@ -81,29 +89,28 @@ class MainWindow(ctk.CTk):
             table_frame.pack(expand=True, fill="both", padx=10, pady=10)
             self.table_instance = Table(table_frame)
 
-            button_frame = ctk.CTkFrame(self.master,)
-            button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
+            self.button_frame = ctk.CTkFrame(self.master,)
+            self.button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
 
-            self.bt_serv = ctk.CTkButton(button_frame, text="Novo Serviço",command=lambda: new_service(self))
+            self.bt_serv = ctk.CTkButton(self.button_frame, text="Novo Serviço",command=lambda: new_service(self))
             self.bt_serv.configure(fg_color="purple",
                                     hover_color="blue",
                                     width=80,
                                     height=80)
             self.bt_serv.pack(side="left", pady=5)
 
-            self.bt_del_serv = ctk.CTkButton(button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
+            self.bt_del_serv = ctk.CTkButton(self.button_frame, text="Deletar Serviço",command=lambda:delete_service(self))
             self.bt_del_serv.configure(fg_color="red",
                                     hover_color="black",
                                     width=80,
                                     height=80)
             self.bt_del_serv.pack(side="left", pady=5)
 
-            self.bt_item = ctk.CTkButton(button_frame, text="Novo item",command=self.open_topLevel)
+            self.bt_item = ctk.CTkButton(self.button_frame, text="Novo item",command=self.open_topLevel)
             self.bt_item.configure(fg_color="green",
                                     width=80,
                                     height=80)
             self.bt_item.pack(side="right",pady=5)
-
 
 
     def open_topLevel(self): #new item
@@ -118,7 +125,7 @@ class MainWindow(ctk.CTk):
 
     def switch_service(self,choice): #precisa?
         change_service(self)
-        print(f'trocou por {choice}')
+        
 
 
     
@@ -142,7 +149,10 @@ class MainWindow(ctk.CTk):
         self.option_serv.configure(values=self.dict_serv)
         change_service(self)
 
-
+    def clean_frame(self,frame):
+         for widget in frame.winfo_children():
+              widget.destroy()
+         
 
 def main():
 
