@@ -29,6 +29,10 @@ class Table():
                             font=("Arial", 12))
         style.map("Treeview.Heading",
                       background=[('active', '#3484F0')])
+        
+        self.treeview.bind("<Button-3>", self.show_context_menu)
+        self.context_menu = tk.Menu(self.treeview, tearoff=0)
+        self.context_menu.add_command(label="Remover", command=self.remove_item)
         for col in columns:
             self.treeview.heading(col, text=col)
             self.treeview.column(col, width=20)
@@ -101,6 +105,39 @@ class Table():
                 x, y, width, height = cell_bbox
                 entry.place(x=x, y=y, width=width, height=height)
                 entry.focus_set()
+
+
+    def show_context_menu(self, event):
+            # Seleciona o item clicado
+            item = self.treeview.identify_row(event.y)
+            if item:
+                self.treeview.selection_set(item)
+                self.context_menu.post(event.x_root, event.y_root)
+
+    def remove_item(self):
+        # Obtém o item selecionado
+        item_id = self.treeview.selection()[0]  # Obtém o ID do item selecionado
+        item_values = self.treeview.item(item_id)  # Obtém todas as opções do item
+        item_name = item_values['values'][0]  # Obtém o nome do item, supondo que o nome esteja na primeira posição da lista de valores do item
+
+        service_name = self.main.option_serv.get()
+
+        # Obtém a lista de objetos correspondente ao serviço selecionado
+        service_list = self.main.dict_serv.get(service_name, [])
+
+        # Encontra o objeto correspondente ao item selecionado na lista
+        for obj in service_list:
+            if obj.nome == item_name:  # Supondo que o atributo 'nome' seja usado para identificar o objeto
+                service_list.remove(obj)  # Remove o objeto da lista
+                break  # Sai do loop após remover o objeto
+
+        # Remove o item da tabela
+        self.treeview.delete(item_id)
+
+        print("Nome do item removido:", item_name)
+
+
+
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade,
