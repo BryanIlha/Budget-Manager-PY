@@ -87,7 +87,7 @@ class MainWindow(ctk.CTk):
 
             table_frame = ctk.CTkFrame(self.main_section)
             table_frame.pack(expand=True, fill="both", padx=10, pady=10)
-            self.table_instance = Table(table_frame)
+            self.table_instance = Table(table_frame,self)
 
             self.button_frame = ctk.CTkFrame(self.master,)
             self.button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?

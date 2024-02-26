@@ -5,10 +5,11 @@ from funcion import new_item, add_to_table , obter_nomes_saves
 
 
 class Table():
-    def __init__(self, parent):
+    def __init__(self, parent,main):
         columns = ('Nome', 'Unidade', 'Quantidade', 'Valor Unitario', 'Valor Total')
         self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
         self.treeview.pack(expand=True, fill="both")
+        self.main = main
         style = ttk.Style()
         style.theme_use("default")
     
@@ -45,37 +46,61 @@ class Table():
             # Verifica se a coluna clicada é editável (por exemplo, todas as colunas são editáveis neste exemplo)
             if col_id in range(len(self.treeview["columns"])):
                 self.edit_cell(item, col_id)
-
     def edit_cell(self, item, col_id):
-    # Obtém o valor atual da célula
+        # Obtém o valor atual da célula
         current_value = self.treeview.set(item, self.treeview["columns"][col_id])
 
-        # Remove qualquer widget de edição existente na célula
-        for child in self.treeview.get_children(item):
-            self.treeview.delete(child)
+        # Obtém o nome do serviço selecionado
+        service_name = self.main.option_serv.get()
 
-        # Cria um widget Entry para edição
-        entry = tk.Entry(self.treeview, bd=1, relief='solid')
-        entry.insert(0, current_value)
+        # Obtém a lista de objetos correspondente ao serviço selecionado
+        service_list = self.main.dict_serv.get(service_name, [])
 
-        # Define os eventos para finalizar ou cancelar a edição
-        def end_editing(event=None):
-            new_value = entry.get()
-            self.treeview.set(item, self.treeview["columns"][col_id], new_value)
-            entry.destroy()
+        # Obtém o índice da linha selecionada
+        row_id = int(self.treeview.index(item))
 
-        def cancel_editing(event=None):
-            entry.destroy()
+        # Verifica se o índice da linha está dentro do intervalo da lista
+        if 0 <= row_id < len(service_list):
+            # Obtém o objeto correspondente à linha da tabela na lista de serviço
+            obj = service_list[row_id]
 
-        entry.bind('<Return>', end_editing)
-        entry.bind('<Escape>', cancel_editing)
+            # Remove qualquer widget de edição existente na célula
+            for child in self.treeview.get_children(item):
+                self.treeview.delete(child)
 
-        # Insere o Entry na célula para edição
-        cell_bbox = self.treeview.bbox(item, column=self.treeview["columns"][col_id])
-        if cell_bbox:
-            x, y, width, height = cell_bbox
-            entry.place(x=x, y=y, width=width, height=height)
-            entry.focus_set()
+            # Cria um widget Entry para edição
+            entry = tk.Entry(self.treeview, bd=1, relief='solid')
+            entry.insert(0, current_value)
+
+            # Define os eventos para finalizar ou cancelar a edição
+            def end_editing(event=None):
+                new_value = entry.get()
+                self.treeview.set(item, self.treeview["columns"][col_id], new_value)
+                # Atualiza o atributo correspondente do objeto
+                if col_id == 0:
+                    obj.nome = new_value
+                elif col_id == 1:
+                    obj.unidade = new_value
+                elif col_id == 2:
+                    obj.quantidade = new_value
+                elif col_id == 3:
+                    obj.valor_uni = new_value
+                elif col_id == 4:
+                    obj.valor_total = new_value
+                entry.destroy()
+
+            def cancel_editing(event=None):
+                entry.destroy()
+
+            entry.bind('<Return>', end_editing)
+            entry.bind('<Escape>', cancel_editing)
+
+            # Insere o Entry na célula para edição
+            cell_bbox = self.treeview.bbox(item, column=self.treeview["columns"][col_id])
+            if cell_bbox:
+                x, y, width, height = cell_bbox
+                entry.place(x=x, y=y, width=width, height=height)
+                entry.focus_set()
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade,
