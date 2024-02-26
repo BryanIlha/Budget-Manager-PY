@@ -112,11 +112,6 @@ class MainWindow(ctk.CTk):
                                     height=80)
             self.bt_new_item.pack(side="right",pady=5)
 
-            self.bt_change_item = ctk.CTkButton(self.button_frame, text="Mudar item",command=self.open_topLevel)
-            self.bt_change_item.configure(fg_color="blue",
-                                    width=80,
-                                    height=80)
-            self.bt_change_item.pack(side="right",pady=5)
 
 
 
