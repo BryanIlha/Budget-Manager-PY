@@ -5,14 +5,8 @@ from funcion import new_item, add_to_table, obter_nomes_saves
 
 
 class Table():
-<<<<<<< HEAD
     def __init__(self, parent,main):
         columns = ('Nome', 'Unidade', 'Quantidade', 'Valor Unitario', 'Valor Total')
-=======
-    def __init__(self, parent):
-        columns = ('Nome', 'Unidade', 'Quantidade',
-                   'Valor Unitario', 'Valor Total')
->>>>>>> TopLevel/GUI
         self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
         self.treeview.pack(expand=True, fill="both")
         self.main = main
@@ -28,21 +22,11 @@ class Table():
                         borderwidth=0)
         style.map('Treeview', background=[('selected', '#22559b')])
 
-        style.configure("Treeview.Heading",
-                        background="#565b5e",
-                        foreground="white",
-                        relief="flat",
-                        font=("Arial", 12))
-        style.map("Treeview.Heading",
-<<<<<<< HEAD
-                      background=[('active', '#3484F0')])
+
         
         self.treeview.bind("<Button-3>", self.show_context_menu)
         self.context_menu = tk.Menu(self.treeview, tearoff=0)
         self.context_menu.add_command(label="Remover", command=self.remove_item)
-=======
-                  background=[('active', '#3484F0')])
->>>>>>> TopLevel/GUI
         for col in columns:
             self.treeview.heading(col, text=col)
             self.treeview.column(col, width=20)
@@ -185,15 +169,9 @@ class TopLevelConfirmModal(ctk.CTkToplevel):
 
 
 class TopLevelWindow(ctk.CTkToplevel):
-<<<<<<< HEAD
     def __init__(self, master,table_instance,service_name,dict_serv,*args, **kwargs):
         super().__init__(master,*args, **kwargs)
         self.title("New Item")
-=======
-    def __init__(self, master, table_instance, service_name, dict_serv, *args, **kwargs):
-        super().__init__(master, *args, **kwargs)
-        self.title("New Window")
->>>>>>> TopLevel/GUI
         self.resizable(False, False)
         self.dict_serv = dict_serv
         self.service_name = service_name
@@ -268,8 +246,5 @@ class LoadWindow(ctk.CTkToplevel):
         self.choosed_load = self.load_optmenu.get()
 
         self.destroy()  # Destruir o TopLevel
-<<<<<<< HEAD
 
 
-=======
->>>>>>> TopLevel/GUI
