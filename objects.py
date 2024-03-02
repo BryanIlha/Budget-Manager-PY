@@ -63,6 +63,8 @@ class TopLevelConfirmModal(ctk.CTkToplevel):
             button = ctk.CTkButton(self, text=button_text)
             button.pack(padx=10, pady=10)
             self.buttons.append(button)
+        self.grab_set()
+        
 
 
 class TopLevelWindow(ctk.CTkToplevel):
@@ -137,6 +139,7 @@ class LoadWindow(ctk.CTkToplevel):
         self.get_load_btn = ctk.CTkButton(
             self, text='CARREGAR', command=self.get_load)
         self.get_load_btn.pack()
+        self.grab_set()
 
     def get_load(self):
         self.choosed_load = self.load_optmenu.get()

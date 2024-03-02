@@ -126,6 +126,7 @@ class MainWindow(ctk.CTk):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = TopLevelWindow(
                 self, self.table_instance, service_name, self.dict_serv)
+            self.toplevel_window.grab_set()
         else:
             self.toplevel_window.focus()
 
