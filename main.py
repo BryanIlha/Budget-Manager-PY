@@ -5,6 +5,7 @@ import customtkinter as ctk
 # objetos como tabela e items
 from objects import Table, TopLevelWindow, Item, LoadWindow
 from funcion import create_excel, new_service, delete_service, clear_table, change_service, save_dict, load_dict
+from pdffuncion import create_table
 
 
 ctk.set_appearance_mode("dark")
@@ -62,7 +63,7 @@ class MainWindow(ctk.CTk):
         profile_photo.pack(pady=20)
 
         section1_button = ctk.CTkButton(
-            self.sidebar, text="Section 1", command=lambda: create_excel())  # nao funciona
+            self.sidebar, text="Section 1", command=lambda: create_table(self))  # nao funciona
         section1_button.pack(pady=5, padx=10, fill="x")
 
         save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command=lambda: save_dict(
