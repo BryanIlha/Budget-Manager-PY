@@ -87,7 +87,7 @@ class MainWindow(ctk.CTk):
 
             table_frame = ctk.CTkFrame(self.main_section)
             table_frame.pack(expand=True, fill="both", padx=10, pady=10)
-            self.table_instance = Table(table_frame)
+            self.table_instance = Table(table_frame,self)
 
             self.button_frame = ctk.CTkFrame(self.master,)
             self.button_frame.pack(fill="both",  padx=20, pady=10) #devo adicionar side?
@@ -106,11 +106,13 @@ class MainWindow(ctk.CTk):
                                     height=80)
             self.bt_del_serv.pack(side="left", pady=5)
 
-            self.bt_item = ctk.CTkButton(self.button_frame, text="Novo item",command=self.open_topLevel)
-            self.bt_item.configure(fg_color="green",
+            self.bt_new_item = ctk.CTkButton(self.button_frame, text="Novo item",command=self.open_topLevel)
+            self.bt_new_item.configure(fg_color="green",
                                     width=80,
                                     height=80)
-            self.bt_item.pack(side="right",pady=5)
+            self.bt_new_item.pack(side="right",pady=5)
+
+
 
 
     def open_topLevel(self): #new item

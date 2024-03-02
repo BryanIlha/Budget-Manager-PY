@@ -1,13 +1,15 @@
 from tkinter import ttk
+import tkinter as tk
 import customtkinter as ctk
 from funcion import new_item, add_to_table , obter_nomes_saves
 
 
 class Table():
-    def __init__(self, parent):
+    def __init__(self, parent,main):
         columns = ('Nome', 'Unidade', 'Quantidade', 'Valor Unitario', 'Valor Total')
         self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
         self.treeview.pack(expand=True, fill="both")
+        self.main = main
         style = ttk.Style()
         style.theme_use("default")
     
@@ -27,9 +29,115 @@ class Table():
                             font=("Arial", 12))
         style.map("Treeview.Heading",
                       background=[('active', '#3484F0')])
+        
+        self.treeview.bind("<Button-3>", self.show_context_menu)
+        self.context_menu = tk.Menu(self.treeview, tearoff=0)
+        self.context_menu.add_command(label="Remover", command=self.remove_item)
         for col in columns:
             self.treeview.heading(col, text=col)
             self.treeview.column(col, width=20)
+        
+        # Vincula o evento de clique duplo na tabela à função 'on_double_click'
+        self.treeview.bind('<Double-1>', self.on_double_click)
+
+    def on_double_click(self, event):
+        item = self.treeview.selection()
+        if item:
+            # Obtem o índice numérico da coluna onde o clique duplo ocorreu
+            col_id = int(self.treeview.identify_column(event.x).split("#")[-1]) - 1
+            row_id = self.treeview.identify_row(event.y)
+            
+            # Verifica se a coluna clicada é editável (por exemplo, todas as colunas são editáveis neste exemplo)
+            if col_id in range(len(self.treeview["columns"])):
+                self.edit_cell(item, col_id)
+    def edit_cell(self, item, col_id):
+        # Obtém o valor atual da célula
+        current_value = self.treeview.set(item, self.treeview["columns"][col_id])
+
+        # Obtém o nome do serviço selecionado
+        service_name = self.main.option_serv.get()
+
+        # Obtém a lista de objetos correspondente ao serviço selecionado
+        service_list = self.main.dict_serv.get(service_name, [])
+
+        # Obtém o índice da linha selecionada
+        row_id = int(self.treeview.index(item))
+
+        # Verifica se o índice da linha está dentro do intervalo da lista
+        if 0 <= row_id < len(service_list):
+            # Obtém o objeto correspondente à linha da tabela na lista de serviço
+            obj = service_list[row_id]
+
+            # Remove qualquer widget de edição existente na célula
+            for child in self.treeview.get_children(item):
+                self.treeview.delete(child)
+
+            # Cria um widget Entry para edição
+            entry = tk.Entry(self.treeview, bd=1, relief='solid')
+            entry.insert(0, current_value)
+
+            # Define os eventos para finalizar ou cancelar a edição
+            def end_editing(event=None):
+                new_value = entry.get()
+                self.treeview.set(item, self.treeview["columns"][col_id], new_value)
+                # Atualiza o atributo correspondente do objeto
+                if col_id == 0:
+                    obj.nome = new_value
+                elif col_id == 1:
+                    obj.unidade = new_value
+                elif col_id == 2:
+                    obj.quantidade = new_value
+                elif col_id == 3:
+                    obj.valor_uni = new_value
+                elif col_id == 4:
+                    obj.valor_total = new_value
+                entry.destroy()
+
+            def cancel_editing(event=None):
+                entry.destroy()
+
+            entry.bind('<Return>', end_editing)
+            entry.bind('<Escape>', cancel_editing)
+
+            # Insere o Entry na célula para edição
+            cell_bbox = self.treeview.bbox(item, column=self.treeview["columns"][col_id])
+            if cell_bbox:
+                x, y, width, height = cell_bbox
+                entry.place(x=x, y=y, width=width, height=height)
+                entry.focus_set()
+
+
+    def show_context_menu(self, event):
+            # Seleciona o item clicado
+            item = self.treeview.identify_row(event.y)
+            if item:
+                self.treeview.selection_set(item)
+                self.context_menu.post(event.x_root, event.y_root)
+
+    def remove_item(self):
+        # Obtém o item selecionado
+        item_id = self.treeview.selection()[0]  # Obtém o ID do item selecionado
+        item_values = self.treeview.item(item_id)  # Obtém todas as opções do item
+        item_name = item_values['values'][0]  # Obtém o nome do item, supondo que o nome esteja na primeira posição da lista de valores do item
+
+        service_name = self.main.option_serv.get()
+
+        # Obtém a lista de objetos correspondente ao serviço selecionado
+        service_list = self.main.dict_serv.get(service_name, [])
+
+        # Encontra o objeto correspondente ao item selecionado na lista
+        for obj in service_list:
+            if obj.nome == item_name:  # Supondo que o atributo 'nome' seja usado para identificar o objeto
+                service_list.remove(obj)  # Remove o objeto da lista
+                break  # Sai do loop após remover o objeto
+
+        # Remove o item da tabela
+        self.treeview.delete(item_id)
+
+        print("Nome do item removido:", item_name)
+
+
+
 
 class Item: #objeto referente aos itens do orçamento
     def __init__(self, nome, unidade, quantidade,
@@ -54,7 +162,7 @@ class Item: #objeto referente aos itens do orçamento
 class TopLevelWindow(ctk.CTkToplevel):
     def __init__(self, master,table_instance,service_name,dict_serv,*args, **kwargs):
         super().__init__(master,*args, **kwargs)
-        self.title("New Window")
+        self.title("New Item")
         self.resizable(False, False)
         self.dict_serv= dict_serv
         self.service_name= service_name
@@ -134,4 +242,5 @@ class LoadWindow(ctk.CTkToplevel):
         self.choosed_load = self.load_optmenu.get()
         
         self.destroy()  # Destruir o TopLevel
-        
+
+
