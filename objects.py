@@ -179,15 +179,25 @@ class TopLevelWindow(ctk.CTkToplevel):
 
         labels = ["Nome", "Unidade", "Quantidade",
                   "Valor Unitário", "Valor Total"]
+        
+        unidades = ["unidade", "quilograma", "grama", "metro", "centímetro", "milímetro", "litro", "mililitro", "hora", "minuto", "segundo"]
+ 
         self.entries = []
 
         for i, label_text in enumerate(labels):
+            
+                
+                
             label = ctk.CTkLabel(self, text=label_text + ":",)
             label.grid(row=i, column=0, padx=5, pady=5, sticky="w")
-
-            entry = ctk.CTkEntry(self)
-            entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
-            self.entries.append(entry)
+            if label_text != "Unidade":
+                entry = ctk.CTkEntry(self)
+                entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
+                self.entries.append(entry)
+            else:
+                entry= ctk.CTkOptionMenu(self,values=unidades )
+                entry.grid(row=i, column=1, padx=5, pady=5, sticky="ew")
+                self.entries.append(entry)
 
         self.switch_var = ctk.StringVar(value="off")
         switch = ctk.CTkSwitch(self, text="Calcular Valor Total", variable=self.switch_var,
@@ -197,6 +207,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         add_button = ctk.CTkButton(
             self, text="Adicionar", command=lambda: self.get_entry_vals())
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
+        self.grab_set()
 
     def get_entry_vals(self):  # função para pegar os valores da entry e jogar em um objeto
         self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total = [
