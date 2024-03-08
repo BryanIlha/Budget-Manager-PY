@@ -205,20 +205,45 @@ class TopLevelWindow(ctk.CTkToplevel):
         switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
 
         add_button = ctk.CTkButton(
-            self, text="Adicionar", command=lambda: self.get_entry_vals())
+            self, text="Adicionar", command=lambda: self.send_entry_var())
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
         self.grab_set()
 
-    def get_entry_vals(self):  # função para pegar os valores da entry e jogar em um objeto
+        self.entries[2].bind("<KeyRelease>", self.atualizar_label)
+        self.entries[3].bind("<KeyRelease>", self.atualizar_label)
+    def atualizar_label(self,event=None):
+        
+        if self.switch_var.get() == "on":
+            try:
+                
+                unidade= float(self.entries[2].get())
+                valor_uni= float(self.entries[3].get())
+                valor_total = unidade*valor_uni
+                valor_formatado = f'R${valor_total:.2f}'
+                
+                self.labe_ltotal.configure(text=valor_formatado)
+                
+            except:
+                self.labe_ltotal.configure(text="R$ 0,00")
+                
+        
+
+    def get_entry_var(self):
         self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total = [
             entry.get() for entry in self.entries]
 
         if self.switch_var.get() == "on":
             try:
                 self.valor_total = int(self.quantidade) * int(self.valor_uni)
-
+                
             except:
-                print('deu ruim')  # adicionar messagebox BRUNO
+                print("deu merda aqui ")
+                pass
+
+        
+        
+    def send_entry_var(self):  # função para pegar os valores da entry e jogar em um objeto
+        self.get_entry_var()
 
         # criando um objeto com os valores obtido
         new_item(self, Item, self.service_name)
@@ -228,11 +253,21 @@ class TopLevelWindow(ctk.CTkToplevel):
         super().destroy()
 
     def switch_event(self):
+        
+        
         if self.switch_var.get() == "on":
             self.entries[-1].grid_remove()  # Remove a entrada de Valor Total
+            self.labe_ltotal= ctk.CTkLabel(self,text="0")
+            self.labe_ltotal.grid(row=len(self.entries) - 1, column=1, padx=5, pady=5, sticky="ew")
+
+            self.atualizar_label()
 
         else:
-            self.entries[-1].grid()  # Reexibe a entrada de Valor Total
+            self.entries[-1].grid()
+            if self.labe_ltotal:
+                self.labe_ltotal.destroy()
+
+
 
 
 class LoadWindow(ctk.CTkToplevel):

@@ -114,7 +114,6 @@ class MainWindow(ctk.CTk):
 
 
 
-
     def open_topLevel(self): #new item
             service_name=self.option_serv.get()
             
