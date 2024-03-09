@@ -229,8 +229,13 @@ class TopLevelWindow(ctk.CTkToplevel):
         
 
     def get_entry_var(self):
-        self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total = [
-            entry.get() for entry in self.entries]
+        entry_values = [entry.get() for entry in self.entries]
+
+        if "" in entry_values:
+            print("Tem campo vazio") # adicionar modal aqui
+            return None
+        
+        self.nome, self.unidade, self.quantidade, self.valor_uni, self.valor_total = entry_values
 
         if self.switch_var.get() == "on":
             try:
@@ -243,11 +248,12 @@ class TopLevelWindow(ctk.CTkToplevel):
         
         
     def send_entry_var(self):  # função para pegar os valores da entry e jogar em um objeto
-        self.get_entry_var()
+
+        if self.get_entry_var() is not None:
 
         # criando um objeto com os valores obtido
-        new_item(self, Item, self.service_name)
-        self.destroy()
+            new_item(self, Item, self.service_name)
+            self.destroy()
 
     def destroy(self):
         super().destroy()

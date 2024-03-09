@@ -42,6 +42,11 @@ def new_service(self):  # nome dos serviços so para aparecer no option menu
 
     # o service é um array do objeto item
     self.service_name = inputbox("Novo Serviço", ("Digite o nome do Serviço"))
+
+    if self.service_name == "":
+        print("nome vazio nao pode dog")
+        new_service(self)
+        return 
     if self.service_name is not None:
 
         self.dict_serv[self.service_name] = []
