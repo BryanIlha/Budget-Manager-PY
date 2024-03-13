@@ -179,6 +179,8 @@ def save_dict(self):
 
 def load_dict(self, Item, Class):
     save_to_load = open_load(self, Class)
+    if save_to_load is False:
+        return None
 
     self.clean_frame(self.main_section)
     self.button_frame.destroy()
@@ -213,7 +215,11 @@ def load_dict(self, Item, Class):
 def open_load(self, Class):
     load_window = Class(self)
     load_window.wait_window()  # Aguarda até que a janela seja fechada
-    return load_window.choosed_load
+    try:
+        return load_window.choosed_load
+    except:
+        print("veio ate aqui ")  ## adicionar messagebox?
+        return False
 
 
 def obter_nomes_saves():
