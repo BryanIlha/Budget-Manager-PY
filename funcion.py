@@ -178,6 +178,10 @@ def save_dict(self):
 
 
 def load_dict(self, Item, Class):
+    saves = obter_nomes_saves()
+    if len(saves) == 0:
+            print("Sem load para carregar dog")
+            return None
     save_to_load = open_load(self, Class)
     if save_to_load is False:
         return None
@@ -218,7 +222,7 @@ def open_load(self, Class):
     try:
         return load_window.choosed_load
     except:
-        print("veio ate aqui ")  ## adicionar messagebox?
+        print("cancelou o load dog ")  ## adicionar messagebox?
         return False
 
 

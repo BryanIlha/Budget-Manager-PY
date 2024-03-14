@@ -285,6 +285,9 @@ class LoadWindow(ctk.CTkToplevel):
         self.label.pack(padx=20, pady=20)
 
         saves = obter_nomes_saves()
+        if len(saves) == 0:
+            print("ta vazio essa merda")
+            self.destroy()
 
         self.load_optmenu = ctk.CTkOptionMenu(self, values=saves)
         self.load_optmenu.pack()
