@@ -32,7 +32,7 @@ def new_item(self, Item, service_name):
     # Instantiate the Item object
     item = Item(self.nome, self.unidade, self.quantidade,
                 self.valor_uni, self.valor_total)
-    # parte mega importante para ter uma lista dos objetos
+    # parte mega importante para ter um dicionario dos objetos
     self.dict_serv[self.service_name].append(item)
 
     add_to_table(item, self.table_instance)
