@@ -84,7 +84,11 @@ class Table():
                 elif col_id == 3:
                     obj.valor_uni = new_value
                 elif col_id == 4:
-                    obj.valor_total = new_value
+                    try:
+                        obj.valor_total = float(new_value)
+                    except:
+                        self.treeview.set(item, self.treeview["columns"][col_id], obj.valor_total)
+                        print("valor total so pode ser numero")
                 entry.destroy()
 
             def cancel_editing(event=None):
