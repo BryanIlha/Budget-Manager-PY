@@ -156,6 +156,29 @@ def servico_para_json(servico):
 def save_dict(self):
     # Solicita ao usuário que insira o nome do save
     nome_do_save = inputbox("Novo Save", "Digite o nome do save: ")
+    saves = obter_nomes_saves()
+    if nome_do_save in saves:
+        modal = objects.TopLevelConfirmModal(
+            self,
+            title="Aviso",
+            text="Já existe um save com este nome",
+            button_texts=["OK"],
+        )
+        modal.buttons[0].configure(command=modal.destroy)
+        modal.lift()
+        return
+    elif nome_do_save =="":
+        modal = objects.TopLevelConfirmModal(
+            self,
+            title="Aviso",
+            text="Digite um nome de save valido",
+            button_texts=["OK"],
+        )
+        modal.buttons[0].configure(command=modal.destroy)
+        modal.lift()
+        return
+        
+        
 
     # Verifica se o arquivo save.json está vazio
     with open('save.json', 'r') as arquivo:
@@ -180,7 +203,14 @@ def save_dict(self):
 def load_dict(self, Item, Class):
     saves = obter_nomes_saves()
     if len(saves) == 0:
-            print("Sem load para carregar dog")
+            modal = objects.TopLevelConfirmModal(
+                self,
+                title="Aviso",
+                text="Não existem loads para serem carregados",
+                button_texts=["OK"],
+            )
+            modal.buttons[0].configure(command=modal.destroy)
+            modal.lift()
             return None
     save_to_load = open_load(self, Class)
     if save_to_load is False:

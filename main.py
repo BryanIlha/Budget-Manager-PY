@@ -16,6 +16,7 @@ ctk.set_default_color_theme("green")
 class MainWindow(ctk.CTk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.check_save = False
 
         self.simple_counter = 0 #revisar first time counter
         self.dict_serv={} #lista de serviços utizilar em condicionais para nao deixar exportar sem nenhum serviço
@@ -49,6 +50,8 @@ class MainWindow(ctk.CTk):
                                 width=80,
                                 height=80)
         self.bt_serv.pack(side="top", pady=5)
+
+        
                
     
 
@@ -62,8 +65,7 @@ class MainWindow(ctk.CTk):
         section1_button = ctk.CTkButton(self.sidebar, text="Section 1",command= lambda:create_table(self)) #nao funciona
         section1_button.pack(pady=5, padx=10, fill="x")
 
-        save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self)  ) #tirar daqui depois 
-        save_btn.pack(pady=5, padx=10, fill="x")
+
 
         load_btn = ctk.CTkButton(self.sidebar, text="Carregar", command= lambda:load_dict(self,Item,LoadWindow)  ) #tirar daqui depois 
         load_btn.pack(pady=5, padx=10, fill="x")
@@ -112,6 +114,10 @@ class MainWindow(ctk.CTk):
                                     width=80,
                                     height=80)
             self.bt_new_item.pack(side="right",pady=5)
+            if self.check_save is False:
+                self.check_save= True
+                save_btn = ctk.CTkButton(self.sidebar, text="Salvar", command= lambda:save_dict(self)  ) #tirar daqui depois 
+                save_btn.pack(pady=5, padx=10, fill="x")
 
 
 
