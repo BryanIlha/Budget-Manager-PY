@@ -11,7 +11,6 @@ import json
 items_list = []
 index_counter = 0
 
-
 def init_excel():
     try:
         # Abrir um arquivo Excel existente
@@ -111,7 +110,12 @@ def change_service(self):
     for item in service_content:
         add_to_table(item, self.table_instance)
 
+def unlock_btns(self):
+        self.resizable(True, True)
+        self.geometry("600x700")
 
+        self.pdf_btn.configure(hover=True,state="normal", fg_color="green")
+        self.save_btn.configure(hover=True,state="normal", fg_color="green")
 def clear_table(self):
     # Limpa todos os itens existentes na tabela
     self.table_instance.treeview.delete(
@@ -178,6 +182,7 @@ def save_dict(self):
 
 
 def load_dict(self, Item, Class):
+    
     saves = obter_nomes_saves()
     if len(saves) == 0:
             print("Sem load para carregar dog")
@@ -211,7 +216,7 @@ def load_dict(self, Item, Class):
                         lista_itens.append(item)
 
                     self.dict_serv[serv_name] = lista_itens
-
+    unlock_btns(self)
     self.create_main_section()
     change_service(self)
 

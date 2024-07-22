@@ -2,6 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 import customtkinter as ctk
 from funcion import new_item, add_to_table, obter_nomes_saves
+from tkcalendar import Calendar, DateEntry
 
 
 class Table():
@@ -170,6 +171,52 @@ class TopLevelConfirmModal(ctk.CTkToplevel):
             self.buttons.append(button)
         self.grab_set()
         
+
+class PdfGeneratorWindow(ctk.CTkToplevel):
+    def __init__(self,master,*args,**kwargs):
+        super().__init__(master,*args,**kwargs)
+        self.title("PDF GENERATOR")
+        self.resizable(False,False)
+        labels= ["Date","Client"]
+        self.entries= []
+        self.switch_var= ctk.StringVar(value="on")
+
+        for i, label_text in enumerate(labels):
+
+            label = ctk.CTkLabel(self,text=label_text + ":")
+            label.grid(row=i,column=0,padx=5,pady=5,sticky="w")
+            if label_text !="Date":
+                entry= ctk.CTkEntry(self)
+                entry.grid(row=i,column=1,padx=5,pady=5,sticky="ew")
+                self.entries.append(entry)
+            else:
+                entry=DateEntry(self, width=12, background='darkblue',
+                    foreground='white', borderwidth=2)
+                entry.grid(row=i,column=1,padx=5,pady=5,sticky="ew")
+        switch = ctk.CTkSwitch(self, text="ENVIAR EMAIL?", command=self.switch_email,
+        onvalue="on", offvalue="off",variable=self.switch_var)
+        switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
+
+
+
+        self.generate_btn= ctk.CTkButton(self)
+        self.generate_btn.grid(row=5,column=0,columnspan=2)
+        self.switch_email()
+
+    def switch_email(self):
+            print(self.switch_var.get())
+           
+            if self.switch_var.get() == "on":
+                self.email_label=ctk.CTkLabel(self,text="Email adress" + ":")
+                self.email_label.grid(row=4,column=0,padx=5,pady=5,sticky="w")
+
+                self.email_entry=ctk.CTkEntry(self)
+                self.email_entry.grid(row=4,column=1,padx=5,pady=5,sticky="ew")
+
+            else:
+                self.email_label.destroy()
+                self.email_entry.destroy()
+            
 
 
 class TopLevelWindow(ctk.CTkToplevel):
