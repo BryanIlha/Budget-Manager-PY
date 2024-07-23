@@ -136,15 +136,18 @@ class Table():
 
         # Encontra o objeto correspondente ao item selecionado na lista
         for obj in service_list:
-            if obj.nome == item_name:  # Supondo que o atributo 'nome' seja usado para identificar o objeto
+            if str(obj.nome) == str(item_name):  # Supondo que o atributo 'nome' seja usado para identificar o objeto
+                print("são iguais")
+                print(str(obj.nome))
                 service_list.remove(obj)  # Remove o objeto da lista
                 break  # Sai do loop após remover o objeto
+            else:
+                print("nao sao iguais")
 
         # Remove o item da tabela
         self.treeview.delete(item_id)
 
-        print("Nome do item removido:", item_name)
-        self.main.pdf_btn.configure(text="Item Removido")
+        print("Nome do item removido:", item_name) # Add modal here
         get_total(self.main)
 
 
