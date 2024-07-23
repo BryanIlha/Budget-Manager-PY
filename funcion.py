@@ -242,3 +242,7 @@ def obter_nomes_saves():
 
     # Retorna os nomes dos saves como uma lista
     return list(dados_existentes.keys())
+
+def open_pdf_window(master, PdfGeneratorWindow):
+    pdfgenwindow = PdfGeneratorWindow(master)
+    pdfgenwindow.focus()

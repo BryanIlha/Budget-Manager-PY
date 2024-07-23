@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 # from funcion import * # importando todas funções
-from objects import Table, TopLevelWindow,Item,LoadWindow #objetos como tabela e items
+from objects import Table, TopLevelWindow,Item,LoadWindow,PdfGeneratorWindow #objetos como tabela e items
 from funcion import *
-from pdffuncion import create_table, open_pdf_window
+from funcion import open_pdf_window
 
 
 ctk.set_appearance_mode("dark")
@@ -60,7 +60,7 @@ class MainWindow(ctk.CTk):
         self.profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
         self.profile_photo.pack(pady=20)
 
-        self.pdf_btn = ctk.CTkButton(self.sidebar, text="Generate PDF",command= lambda:open_pdf_window(self),state="disabled",fg_color="grey",hover=False) 
+        self.pdf_btn = ctk.CTkButton(self.sidebar, text="Generate PDF",command= lambda:open_pdf_window(self,PdfGeneratorWindow),state="disabled",fg_color="grey",hover=False) 
         self.pdf_btn.pack(pady=5, padx=10, fill="x")
 
         self.save_btn = ctk.CTkButton(self.sidebar, text="Save", command= lambda:save_dict(self),state="disabled",fg_color="grey",hover=False ) #tirar daqui depois 

@@ -2,19 +2,15 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
-from objects import PdfGeneratorWindow
 import pandas as pd
 
 
-def open_pdf_window(self):
-    self.pdfgenwindow = PdfGeneratorWindow(self)
-    self.pdfgenwindow.focus()
-def create_table(self):
 
-    
-                
+def create_table(pdfwindow,self):
 
-   
+                   
+
+    pdfwindow.destroy()
     # Criando o arquivo PDF
     lista_formatada = []
     doc = SimpleDocTemplate("table.pdf", pagesize=letter)

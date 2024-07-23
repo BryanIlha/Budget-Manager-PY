@@ -3,6 +3,7 @@ import tkinter as tk
 import customtkinter as ctk
 from funcion import new_item, add_to_table, obter_nomes_saves
 from tkcalendar import Calendar, DateEntry
+from pdffuncion import create_table
 
 
 class Table():
@@ -199,7 +200,7 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
 
 
 
-        self.generate_btn= ctk.CTkButton(self)
+        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(self,master))
         self.generate_btn.grid(row=5,column=0,columnspan=2)
         self.switch_email()
 
@@ -338,9 +339,9 @@ class TopLevelWindow(ctk.CTkToplevel):
 class LoadWindow(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("400x300")
+        self.geometry("250x150")
 
-        self.label = ctk.CTkLabel(self, text="Escolha o Save")
+        self.label = ctk.CTkLabel(self, text="Choose The Load")
         self.label.pack(padx=20, pady=20)
 
         saves = obter_nomes_saves()
