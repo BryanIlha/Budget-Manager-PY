@@ -200,7 +200,7 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
 
 
 
-        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(self,master))
+        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(master))
         self.generate_btn.grid(row=5,column=0,columnspan=2)
         self.switch_email()
 

@@ -60,7 +60,7 @@ class MainWindow(ctk.CTk):
         self.profile_photo = ctk.CTkLabel(self.sidebar, text="Profile Photo",)
         self.profile_photo.pack(pady=20)
 
-        self.pdf_btn = ctk.CTkButton(self.sidebar, text="Generate PDF",command= lambda:open_pdf_window(self,PdfGeneratorWindow),state="disabled",fg_color="grey",hover=False) 
+        self.pdf_btn = ctk.CTkButton(self.sidebar, text="Generate PDF",command= lambda:print_total_values(self),state="disabled",fg_color="grey",hover=False) #open_pdf_window(self,PdfGeneratorWindow
         self.pdf_btn.pack(pady=5, padx=10, fill="x")
 
         self.save_btn = ctk.CTkButton(self.sidebar, text="Save", command= lambda:save_dict(self),state="disabled",fg_color="grey",hover=False ) #tirar daqui depois 

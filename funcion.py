@@ -244,5 +244,22 @@ def obter_nomes_saves():
     return list(dados_existentes.keys())
 
 def open_pdf_window(master, PdfGeneratorWindow):
+
     pdfgenwindow = PdfGeneratorWindow(master)
     pdfgenwindow.focus()
+
+def print_total_values(self):
+        total_values = []
+
+        service_name = self.option_serv.get()
+        service_content = self.dict_serv[service_name]
+
+        for item in service_content:
+            total_values.append(item.valor_total)
+
+        # Imprime os valores totais
+        print("Valores totais na tabela:")
+        for value in total_values:
+            print(value)
+
+        return total_values
