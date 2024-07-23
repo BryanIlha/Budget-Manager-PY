@@ -193,9 +193,11 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
         super().__init__(master,*args,**kwargs)
         self.title("PDF GENERATOR")
         self.resizable(False,False)
+        self.grab_set()
         labels= ["Date","Client"]
         self.entries= []
         self.switch_var= ctk.StringVar(value="on")
+        self.master=master
 
         for i, label_text in enumerate(labels):
 
@@ -209,13 +211,14 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
                 entry=DateEntry(self, width=12, background='darkblue',
                     foreground='white', borderwidth=2)
                 entry.grid(row=i,column=1,padx=5,pady=5,sticky="ew")
+                self.entries.append(entry)
         switch = ctk.CTkSwitch(self, text="ENVIAR EMAIL?", command=self.switch_email,
         onvalue="on", offvalue="off",variable=self.switch_var)
         switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
 
 
 
-        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(self,master))
+        self.generate_btn= ctk.CTkButton(self,command=lambda:self.get_entries())
         self.generate_btn.grid(row=5,column=0,columnspan=2)
         self.switch_email()
 
@@ -228,10 +231,18 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
 
                 self.email_entry=ctk.CTkEntry(self)
                 self.email_entry.grid(row=4,column=1,padx=5,pady=5,sticky="ew")
+                self.entries.append(self.email_entry)
 
             else:
                 self.email_label.destroy()
                 self.email_entry.destroy()
+    def get_entries(self):
+        entries_data = [entry.get() for entry in self.entries]
+        create_table(self,self.master, entries_data)
+        self.destroy()
+       
+        
+
             
 
 

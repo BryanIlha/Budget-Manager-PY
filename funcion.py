@@ -271,6 +271,6 @@ def get_total(self):
                 sum_total= sum_total + int_value
             except:
                 pass
-
+                
         self.total_lbl.configure(text=f'R$ {sum_total:.2f}')
         
