@@ -24,7 +24,7 @@ def init_excel():
         print("Não conseguiu abrir o arquivo Excel:", e)
 
 
-def new_item(self, Item, service_name):
+def new_item(self,master, Item, service_name):
 
     # Unpack the list_values into individual arguments
 
@@ -35,6 +35,7 @@ def new_item(self, Item, service_name):
     self.dict_serv[self.service_name].append(item)
 
     add_to_table(item, self.table_instance)
+    get_total(master)
 
 
 def new_service(self):  # nome dos serviços so para aparecer no option menu
@@ -109,6 +110,8 @@ def change_service(self):
 
     for item in service_content:
         add_to_table(item, self.table_instance)
+    get_total(self)
+   
 
 def unlock_btns(self):
         self.resizable(True, True)
@@ -127,6 +130,7 @@ def add_to_table(item, table_instance):  # use the item object into the table
     values = (item.nome, item.unidade, item.quantidade,
               item.valor_uni, item.valor_total)
     table_instance.treeview.insert('', 'end', values=values)
+
 
 
 def create_excel():
@@ -248,8 +252,10 @@ def open_pdf_window(master, PdfGeneratorWindow):
     pdfgenwindow = PdfGeneratorWindow(master)
     pdfgenwindow.focus()
 
-def print_total_values(self):
+def get_total(self):
         total_values = []
+        sum_total=0
+
 
         service_name = self.option_serv.get()
         service_content = self.dict_serv[service_name]
@@ -260,6 +266,11 @@ def print_total_values(self):
         # Imprime os valores totais
         print("Valores totais na tabela:")
         for value in total_values:
-            print(value)
+            try:
+                int_value = int(value)
+                sum_total= sum_total + int_value
+            except:
+                pass
 
-        return total_values
+        self.total_lbl.configure(text=f'R$ {sum_total:.2f}')
+        

@@ -1,7 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 import customtkinter as ctk
-from funcion import new_item, add_to_table, obter_nomes_saves
+from funcion import new_item, add_to_table, obter_nomes_saves, get_total
 from tkcalendar import Calendar, DateEntry
 from pdffuncion import create_table
 
@@ -12,6 +12,7 @@ class Table():
         self.treeview = ttk.Treeview(parent, columns=columns, show='headings')
         self.treeview.pack(expand=True, fill="both")
         self.main = main
+        
         style = ttk.Style()
         style.theme_use("default")
 
@@ -86,8 +87,10 @@ class Table():
                 elif col_id == 3:
                     obj.valor_uni = new_value
                 elif col_id == 4:
+                    
                     try:
                         obj.valor_total = float(new_value)
+                        get_total(self.main)
                     except:
                         self.treeview.set(item, self.treeview["columns"][col_id], obj.valor_total)
                         print("valor total so pode ser numero")
@@ -115,10 +118,16 @@ class Table():
                 self.context_menu.post(event.x_root, event.y_root)
 
     def remove_item(self):
-        # Obtém o item selecionado
-        item_id = self.treeview.selection()[0]  # Obtém o ID do item selecionado
-        item_values = self.treeview.item(item_id)  # Obtém todas as opções do item
-        item_name = item_values['values'][0]  # Obtém o nome do item, supondo que o nome esteja na primeira posição da lista de valores do item
+        # Verifica se há um item selecionado
+        selected_items = self.treeview.selection()
+        if not selected_items:
+            print("Nenhum item selecionado para remover.")
+            return
+
+        # Obtém o ID do item selecionado
+        item_id = selected_items[0]
+        item_values = self.treeview.item(item_id)
+        item_name = item_values['values'][0]  # Supondo que o nome do item esteja na primeira posição
 
         service_name = self.main.option_serv.get()
 
@@ -135,6 +144,9 @@ class Table():
         self.treeview.delete(item_id)
 
         print("Nome do item removido:", item_name)
+        self.main.pdf_btn.configure(text="Item Removido")
+        get_total(self.main)
+
 
 
 
@@ -200,7 +212,7 @@ class PdfGeneratorWindow(ctk.CTkToplevel):
 
 
 
-        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(master))
+        self.generate_btn= ctk.CTkButton(self,command=lambda:create_table(self,master))
         self.generate_btn.grid(row=5,column=0,columnspan=2)
         self.switch_email()
 
@@ -228,7 +240,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         self.dict_serv = dict_serv
         self.service_name = service_name
         self.table_instance = table_instance
-
+        
         labels = ["Nome", "Unidade", "Quantidade",
                   "Valor Unitário", "Valor Total"]
         
@@ -260,7 +272,7 @@ class TopLevelWindow(ctk.CTkToplevel):
         switch.grid(row=len(labels), columnspan=2, pady=10, padx=5, sticky="e")
 
         add_button = ctk.CTkButton(
-            self, text="Adicionar", command=lambda: self.send_entry_var())
+            self, text="Adicionar", command=lambda: self.send_entry_var(master))
         add_button.grid(row=len(labels)+1, columnspan=2, pady=10,)
         self.grab_set()
 
@@ -307,12 +319,12 @@ class TopLevelWindow(ctk.CTkToplevel):
         else:
             return True
         
-    def send_entry_var(self):  # função para pegar os valores da entry e jogar em um objeto
+    def send_entry_var(self,master):  # função para pegar os valores da entry e jogar em um objeto
         
         if self.get_entry_var() is True:
 
         # criando um objeto com os valores obtido
-            new_item(self, Item, self.service_name)
+            new_item(self,master, Item, self.service_name)
             self.destroy()
 
     def destroy(self):
