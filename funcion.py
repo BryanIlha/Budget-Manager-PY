@@ -259,12 +259,13 @@ def get_total(self):
 
         service_name = self.option_serv.get()
         service_content = self.dict_serv[service_name]
+        
 
         for item in service_content:
             total_values.append(item.valor_total)
 
         # Imprime os valores totais
-        print("Valores totais na tabela:")
+        
         for value in total_values:
             try:
                 int_value = int(value)
@@ -272,5 +273,8 @@ def get_total(self):
             except:
                 pass
                 
-        self.total_lbl.configure(text=f'R$ {sum_total:.2f}')
+        self.total_lbl.configure(text=f'TOTAL: R$ {sum_total:.2f}')
+        self.items_lbl.configure(text=f"Itens= {len(service_content)}")
+        self.servs_lbl.configure(text=f"Services= {len(self.dict_serv)}")
+        
         

@@ -96,28 +96,33 @@ class MainWindow(ctk.CTk):
         self.button_frame.pack(fill="both", padx=20, pady=10)
 
         self.bt_serv = ctk.CTkButton(self.button_frame, text="New Service", command=lambda: new_service(self))
-        self.bt_serv.configure(fg_color="purple",
+        self.bt_serv.configure(fg_color="green",
                             hover_color="blue",
-                            width=80,
-                            height=80)
+                            width=40,
+                            height=40)
         self.bt_serv.pack(side="left", expand=True, fill="both", padx=5, pady=5)
 
         self.bt_del_serv = ctk.CTkButton(self.button_frame, text="Delete Service", command=lambda: delete_service(self))
         self.bt_del_serv.configure(fg_color="red",
                                 hover_color="black",
-                                width=80,
-                                height=80)
+                                width=40,
+                                height=40)
         self.bt_del_serv.pack(side="left", expand=True, fill="both", padx=5, pady=5)
 
         self.bt_new_item = ctk.CTkButton(self.button_frame, text="New Item", command=self.open_topLevel)
         self.bt_new_item.configure(fg_color="green",
-                                width=80,
-                                height=80)
+                                width=40,
+                                height=40)
         self.bt_new_item.pack(side="right", expand=True, fill="both", padx=5, pady=5)
 
+        self.servs_lbl=ctk.CTkLabel(self.sidebar,fg_color="purple",font=("Arial",16)) 
+        self.servs_lbl.pack(pady=10, padx=10, fill="x",side="bottom")
+ 
+        self.items_lbl=ctk.CTkLabel(self.sidebar,fg_color="purple",font=("Arial",16)) 
+        self.items_lbl.pack(pady=10, padx=10, fill="x",side="bottom")
 
-        self.total_lbl = ctk.CTkLabel(self.sidebar, text="TESTE",) #open_pdf_window(self,PdfGeneratorWindow
-        self.total_lbl.pack(pady=50, padx=10, fill="x",side="bottom")
+        self.total_lbl = ctk.CTkLabel(self.sidebar,fg_color="purple",font=("Arial",16)) 
+        self.total_lbl.pack(pady=10, padx=10, fill="x",side="bottom")
 
 
 
